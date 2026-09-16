@@ -10,6 +10,8 @@
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#环境要求)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<img src="images/ch01-why-aria.zh.png" alt="同一份业务逻辑，两种接法：左边同步代码随平台数增长，右边 Aria 只拆一层" width="100%">
+
 </div>
 
 ---
@@ -123,31 +125,49 @@ cmake --build build -j
 AriaTutorial/
 ├── CMakeLists.txt              # 顶层构建：定位 Aria + 汇总 demo
 ├── demos/
-│   ├── CMakeLists.txt          # 每章一个 target
+│   ├── CMakeLists.txt          # 每章一个 target，ch15 的两个用开关隔离
 │   ├── common/                 # 各章共用的辅助代码（教程用内存适配器）
 │   ├── ch01_bill/main.cpp
 │   ├── ch02_hello/main.cpp
-│   ├── ch03_property/main.cpp
-│   └── ch04_computed/main.cpp
-├── docs/                       # 教程正文，全文中英双版本
+│   ├── ...                     # ch03 - ch20，共 20 个可执行目标
+│   ├── ch15_qt6/main.cpp       # 需要 Qt6
+│   ├── ch15_http/main.cpp      # 需要 Aria HTTP 模块
+│   └── ch20_ecosystem/main.cpp
+├── docs/                       # 教程正文，全文中英双版本（40 篇）
 │   ├── 01-为什么再造一个C++MVVM框架.md
 │   ├── 01-why-another-cpp-mvvm-framework.en.md
+│   └── ...                     # 中文用中文文件名，英文版一律 ASCII 名 + .en.md
+├── images/                     # 每章一张配图，中英各一版
+│   ├── ch01-why-aria.zh.png
+│   ├── ch01-why-aria.en.png
+│   ├── src/                    # 配图的 SVG 源文件，可编辑、可 diff
 │   └── ...
-├── images/                     # 正文配图
 └── scripts/
     ├── run-all.ps1
     └── run-all.sh
 ```
 
+## 正文里的图
+
+每一章正文的标题下方都有一张配图，画的是那一章最核心的那件事 —— 数据流、依赖图、状态机或时间线。
+
+配图不是凭空画的示意图，它们与正文一样受同一条规则约束：**图里出现的每个数字都来自该章 demo 的真实运行结果**。比如第 4 章的重算次数（1 → 2 → 3）、第 11 章的编辑操作计数、第 17 章的并发实测耗时（62ms），都能靠 `build/bin/chNN_xxx` 亲手复现。
+
+图有 SVG 源文件（`images/src/*.svg`），可以改文案、改配色、重新导出 PNG。
+
 ## 正文与 demo 的一致性
 
-教程正文不是"照着代码写出来的"——它是**从可运行的 demo 反向产出的**：
+教程正文不是"照着代码写出来的"——它是**从可运行的 demo 反向产出的**。三项检查全部自动化，不靠人眼：
 
-- 正文里每一段 C++ 代码，都与 `demos/chNN_xxx/main.cpp` **逐字一致**；
-- 正文里每一段程序输出，都是该 demo 在 Windows / MSVC 下**真实 stdout 的逐字拷贝**；
-- 两者都有自动化校验，不一致会直接报错，而不是靠人眼检查。
+| 检查项 | 规则 |
+|---|---|
+| 代码真实性 | 正文里每段 ```cpp 代码块，与 `demos/chNN_xxx/main.cpp` **逐字一致** |
+| 输出真实性 | 正文里每段 ```text 输出块，是该 demo **真实 stdout 的逐字拷贝** |
+| 配图真实性 | 每篇恰好一张配图，文件存在，且像素尺寸与它的 SVG 源对得上 |
 
 所以你在正文里看到的每一条行为描述，都可以靠 `build/bin/chNN_xxx` 亲手复现。
+
+> 第 15 章的两个 demo 需要 Qt6 与 Aria HTTP 模块，本机未运行，因此该章只校验代码来源与配图，不校验运行输出 —— 这一点也写在 `ABOUT.md` 的「明确不覆盖的部分」里。
 
 ## 相关仓库
 

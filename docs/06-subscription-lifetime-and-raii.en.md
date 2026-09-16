@@ -1,5 +1,9 @@
 # Subscription: Expressing Subscription Lifetime with Scope
 
+![Chapter 6 figure: Four ways to disconnect, all driven by object lifetime rather than by remembering to call something.](../images/ch06-subscription.en.png)
+
+*Four ways to disconnect, all driven by object lifetime rather than by remembering to call something.*
+
 Chapter 2 left a detail hanging: `bind`'s return value must be kept. This chapter makes that concrete — **how long a subscription lives is decided by the variable holding it** 🔗
 
 Simple as it sounds, this rule replaces manual `disconnect` / `unsubscribe` / `removeObserver` bookkeeping that is so easy to get wrong.

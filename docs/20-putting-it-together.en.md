@@ -1,5 +1,9 @@
 # Putting It Together: A Todo List Built with Aria
 
+![Chapter 20 figure: The full data flow of TodoViewModel, and the trace of one real interaction.](../images/ch20-todo-app.en.png)
+
+*The full data flow of TodoViewModel, and the trace of one real interaction.*
+
 The previous nineteen chapters took Aria apart. This one puts the pieces back: **a complete todo list** with an input, a button, a list, and a counter 🔨
 
 The goal is simple: show you what "no UI code in the ViewModel, no business logic on the UI side" looks like in real code.

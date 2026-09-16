@@ -1,5 +1,9 @@
 # Property in Depth: Reading, Tracking, and the Equality Gate
 
+![Chapter 3 figure: Left: the two branches of a write. Right: three subscription timings and two ways to read.](../images/ch03-property.en.png)
+
+*Left: the two branches of a write. Right: three subscription timings and two ways to read.*
+
 > The code in this chapter is reproduced verbatim from `demos/ch03_property/main.cpp`.
 > Source comments are in Chinese, matching the repository.
 

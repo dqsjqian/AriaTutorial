@@ -1,5 +1,9 @@
 # The Magic of Computed: How Automatic Dependency Tracking Works
 
+![Chapter 4 figure: Top: the dependency set follows the branch. Bottom: when recomputation happens -- note step 2, it recomputes before anyone reads.](../images/ch04-computed.en.png)
+
+*Top: the dependency set follows the branch. Bottom: when recomputation happens -- note step 2, it recomputes before anyone reads.*
+
 > The code in this chapter is reproduced verbatim from `demos/ch04_computed/main.cpp`.
 > Source comments are in Chinese, matching the repository.
 

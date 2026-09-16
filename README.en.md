@@ -10,6 +10,8 @@ Every chapter ships a demo you can compile and run. The code in the articles and
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<img src="images/ch01-why-aria.en.png" alt="One piece of logic, two ways to wire it: sync code grows with the platform count on the left, Aria splits out one layer on the right" width="100%">
+
 [简体中文](README.md) | English
 
 </div>
@@ -128,31 +130,49 @@ The `.ps1` scripts require a ready compiler environment: open **Developer PowerS
 AriaTutorial/
 ├── CMakeLists.txt              # top-level build: locate Aria, collect demos
 ├── demos/
-│   ├── CMakeLists.txt          # one target per chapter
+│   ├── CMakeLists.txt          # one target per chapter; ch15's two are gated
 │   ├── common/                 # shared helpers (tutorial in-memory adapter)
 │   ├── ch01_bill/main.cpp
 │   ├── ch02_hello/main.cpp
-│   ├── ch03_property/main.cpp
-│   └── ch04_computed/main.cpp
-├── docs/                       # articles, all with Chinese and English versions
+│   ├── ...                     # ch03 - ch20, 20 executable targets in total
+│   ├── ch15_qt6/main.cpp       # needs Qt6
+│   ├── ch15_http/main.cpp      # needs Aria's HTTP module
+│   └── ch20_ecosystem/main.cpp
+├── docs/                       # articles, Chinese and English versions (40 files)
 │   ├── 01-为什么再造一个C++MVVM框架.md
 │   ├── 01-why-another-cpp-mvvm-framework.en.md
+│   └── ...                     # Chinese docs keep Chinese names; English docs are ASCII + .en.md
+├── images/                     # one figure per chapter, one per language
+│   ├── ch01-why-aria.zh.png
+│   ├── ch01-why-aria.en.png
+│   ├── src/                    # SVG sources: editable and diffable
 │   └── ...
-├── images/                     # figures used by the articles
 └── scripts/
     ├── run-all.ps1
     └── run-all.sh
 ```
 
+## The figures
+
+Every chapter opens with one figure that draws the single idea that chapter is about -- a data flow, a dependency graph, a state machine, or a timeline.
+
+The figures follow the same rule as the text: **every number in a figure comes from that chapter's actual demo run**. The recompute counters in chapter 4 (1 to 2 to 3), the edit-operation counts in chapter 11, the measured concurrency time in chapter 17 (62 ms) -- all of them can be reproduced by running `build/bin/chNN_xxx`.
+
+Each figure has an SVG source under `images/src/`, so you can change the wording, the palette, and re-export the PNG.
+
 ## How articles and demos stay in sync
 
-The articles were not written first and illustrated afterwards. They were **derived from the runnable demos**:
+The articles were not written first and illustrated afterwards. They were **derived from the runnable demos**. Three checks run automatically; none of them relies on a human eye:
 
-- Every C++ snippet in an article is **character-for-character identical** to `demos/chNN_xxx/main.cpp`;
-- Every output block is a **verbatim copy of real stdout** from that demo on Windows / MSVC;
-- Both properties are checked automatically, so a drift fails the build instead of relying on a human eye.
+| Check | Rule |
+|---|---|
+| Code | Every ```cpp block in an article is **character-for-character identical** to `demos/chNN_xxx/main.cpp` |
+| Output | Every ```text block is a **verbatim copy of real stdout** from that demo |
+| Figures | Each article references exactly one figure; the file exists and its pixel size matches its SVG source |
 
 Every behavioural claim in the text can therefore be reproduced by running `build/bin/chNN_xxx` yourself.
+
+> Chapter 15's two demos need Qt6 and Aria's HTTP module and were not run here, so that chapter is checked for code provenance and figures, but not for runtime output. This is also stated in `ABOUT.en.md` under "What this tutorial does not cover".
 
 ## Related repositories
 

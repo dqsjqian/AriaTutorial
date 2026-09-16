@@ -1,5 +1,9 @@
 # Derived Views: Filtering, Sorting, Deduplication, Paging
 
+![Chapter 10 figure: Every stage of the chain is a view: change the source once and the chain updates incrementally.](../images/ch10-derived-views.en.png)
+
+*Every stage of the chain is a view: change the source once and the chain updates incrementally.*
+
 Once you have a list, four operations always come up: **show a subset, sort by a field, deduplicate, paginate** 🔍
 
 In Aria all four are *views*, not copies. The difference matters: a view **follows its source automatically**, so you never recompute it when the data changes.

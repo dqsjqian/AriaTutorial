@@ -1,5 +1,9 @@
 # batch / untracked / Effect: Controlling the Scope of Notification
 
+![Chapter 5 figure: batch controls how many notifications fire, untracked controls what counts as a dependency, Effect controls how long a side effect lives.](../images/ch05-batch-untracked-effect.en.png)
+
+*batch controls how many notifications fire, untracked controls what counts as a dependency, Effect controls how long a side effect lives.*
+
 The first four chapters were about *making data flow*. This chapter is about **knowing when to hit the brakes** 🛑
 
 Three tools, three different jobs:

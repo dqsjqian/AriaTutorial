@@ -1,5 +1,9 @@
 # ObservableList: A List That Announces Its Changes
 
+![Chapter 9 figure: What each of the six event kinds carries, plus the real event stream this chapter's demo prints.](../images/ch09-observable-list.en.png)
+
+*What each of the six event kinds carries, plus the real event stream this chapter's demo prints.*
+
 `Property<T>` handles a single value. A list is different — what the UI needs to know is **who was inserted, who was removed, who moved**, not merely "the list changed".
 
 `ObservableList<T>` is exactly that 📋

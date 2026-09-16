@@ -1,5 +1,9 @@
 # Writing Your Own IViewAdapter: From 25 Pure Virtuals to 5
 
+![Chapter 16 figure: What each of the three layers does, and the fallback path for capabilities you do not override.](../images/ch16-custom-adapter.en.png)
+
+*What each of the three layers does, and the fallback path for capabilities you do not override.*
+
 Chapter 15 listed `IViewAdapter`'s methods: text, seven numeric types, visibility, enabled, click, platform name — **25 pure virtual functions in total**.
 
 That width is reasonable for the first-party adapters (they really do support everything), but for "I just want to wire up a simple custom widget library" it is a high wall 🧱

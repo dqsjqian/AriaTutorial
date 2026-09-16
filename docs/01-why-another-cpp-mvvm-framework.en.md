@@ -1,5 +1,9 @@
 # Why Another C++ MVVM Framework
 
+![Chapter 1 figure: Left: sync code grows with the number of platforms. Right: Aria splits out one layer, so a new platform costs one adapter.](../images/ch01-why-aria.en.png)
+
+*Left: sync code grows with the number of platforms. Right: Aria splits out one layer, so a new platform costs one adapter.*
+
 > The code in this chapter is reproduced verbatim from `demos/ch01_bill/main.cpp`.
 > Source comments are in Chinese, matching the repository. The program's output
 > is also in Chinese for the same reason.

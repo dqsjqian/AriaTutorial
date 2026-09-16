@@ -1,5 +1,9 @@
 # batch / untracked / Effect：精确控制通知范围
 
+![第 5 章配图：batch 管通知几次，untracked 管谁算依赖，Effect 管副作用活多久。](../images/ch05-batch-untracked-effect.zh.png)
+
+*batch 管通知几次，untracked 管谁算依赖，Effect 管副作用活多久。*
+
 前四章讲的是"怎么让数据自动流动"。这一章讲**怎么在需要的时候踩刹车** 🛑
 
 三个工具各有分工：

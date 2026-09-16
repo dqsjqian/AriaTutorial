@@ -1,5 +1,9 @@
 # Validator: Validation Is Reactive Too
 
+![Chapter 12 figure: must and should split into two paths, and async validation adds a third state: pending.](../images/ch12-validator.en.png)
+
+*must and should split into two paths, and async validation adds a third state: pending.*
+
 Form validation is usually written like this: take the input, run the rules, stuff the errors into a variable, and let the UI read it.
 
 Aria's `Validator` turns the validation result itself into **reactive state** — it recomputes with the field value and you simply subscribe ✅

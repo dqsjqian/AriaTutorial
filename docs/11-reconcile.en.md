@@ -1,5 +1,9 @@
 # reconcile: Refreshing a List from Fresh Data
 
+![Chapter 11 figure: reconcile returns the number of edit operations, not the number of changed rows. Below: measured values for five scenarios.](../images/ch11-reconcile.en.png)
+
+*reconcile returns the number of edit operations, not the number of changed rows. Below: measured values for five scenarios.*
+
 The most common refresh in real code is: **you receive a completely new list and the UI must catch up**.
 
 The naive way is `clear()` then insert everything — the UI rebuilds from scratch, losing scroll position, replaying animations, resetting selection. Chapter 9's `ObservableList` lets you make precise edits, but only if you compute "what changed" yourself 🔧
