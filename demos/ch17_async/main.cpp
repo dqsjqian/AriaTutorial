@@ -48,10 +48,15 @@ int main() {
     std::atomic<int>  single{0};
     std::atomic<bool> single_done{false};
 
-    auto one = [&]() -> Task<void> {
-        single = co_await square_on_pool(pool, 9, 10);
-        single_done = true;
-    }();
+    // 注意: 协程 lambda 绝不按引用捕获 [&]。闭包对象在语句结束就销毁,
+    // 而协程帧活得比它久, resume 时通过悬垂引用访问捕获变量是 UB
+    // (GCC -O2 直接崩, clang 只是碰巧能跑)。状态一律走参数传引用,
+    // 引用本身是拷贝进协程帧的, 指向 main 的栈, 生命周期由 main 保证。
+    auto one = [](std::atomic<int>& out, std::atomic<bool>& done,
+                  ThreadPoolExecutor& pool) -> Task<void> {
+        out = co_await square_on_pool(pool, 9, 10);
+        done = true;
+    }(single, single_done, pool);
     std::move(one).start_detached();
 
     wait_for(single_done);
@@ -63,14 +68,14 @@ int main() {
 
     const auto started = std::chrono::steady_clock::now();
 
-    auto parallel = [&]() -> Task<void> {
+    auto parallel = [](std::atomic<int>& out, std::atomic<bool>& done, ThreadPoolExecutor& pool) -> Task<void> {
         auto [a, b, c] = co_await when_all(
             square_on_pool(pool, 1, 60),
             square_on_pool(pool, 2, 60),
             square_on_pool(pool, 3, 60));
-        total = a + b + c;
-        parallel_done = true;
-    }();
+        out = a + b + c;
+        done = true;
+    }(total, parallel_done, pool);
     std::move(parallel).start_detached();
 
     wait_for(parallel_done);

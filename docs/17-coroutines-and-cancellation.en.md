@@ -63,10 +63,17 @@ int main() {
     std::atomic<int>  single{0};
     std::atomic<bool> single_done{false};
 
-    auto one = [&]() -> Task<void> {
-        single = co_await square_on_pool(pool, 9, 10);
-        single_done = true;
-    }();
+    // NOTE: never reference-capture [&] in a coroutine lambda. The closure
+    // dies at the end of the statement while the coroutine frame outlives it;
+    // resuming then reads through a dangling reference (UB — crashes under
+    // GCC -O2, merely happens to work under clang). Pass state as reference
+    // parameters instead: the references are copied into the coroutine frame
+    // and point at main's stack, whose lifetime main guarantees.
+    auto one = [](std::atomic<int>& out, std::atomic<bool>& done,
+                  ThreadPoolExecutor& pool) -> Task<void> {
+        out = co_await square_on_pool(pool, 9, 10);
+        done = true;
+    }(single, single_done, pool);
     std::move(one).start_detached();
 
     wait_for(single_done);
@@ -78,14 +85,15 @@ int main() {
 
     const auto started = std::chrono::steady_clock::now();
 
-    auto parallel = [&]() -> Task<void> {
+    auto parallel = [](std::atomic<int>& out, std::atomic<bool>& done,
+                       ThreadPoolExecutor& pool) -> Task<void> {
         auto [a, b, c] = co_await when_all(
             square_on_pool(pool, 1, 60),
             square_on_pool(pool, 2, 60),
             square_on_pool(pool, 3, 60));
-        total = a + b + c;
-        parallel_done = true;
-    }();
+        out = a + b + c;
+        done = true;
+    }(total, parallel_done, pool);
     std::move(parallel).start_detached();
 
     wait_for(parallel_done);
@@ -188,10 +196,11 @@ The reason is not hard to follow: `blocking_get()` means "run this coroutine to 
 Blocks 2 and 3 use the second form:
 
 ```cpp
-auto one = [&]() -> Task<void> {
-    single = co_await square_on_pool(pool, 9, 10);
-    single_done = true;                 // completion signal
-}();
+auto one = [](std::atomic<int>& out, std::atomic<bool>& done,
+              ThreadPoolExecutor& pool) -> Task<void> {
+    out = co_await square_on_pool(pool, 9, 10);
+    done = true;                         // completion signal
+}(single, single_done, pool);
 std::move(one).start_detached();        // start without awaiting
 
 wait_for(single_done);                  // poll in the main loop
