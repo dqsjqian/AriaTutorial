@@ -1,5 +1,9 @@
 # BindingEngine: Wiring Properties to a UI
 
+![Chapter 14 figure: Timelines for the three dispatch policies, plus every bind method exercised in this chapter.](../images/ch14-binding-engine.en.png)
+
+*Timelines for the three dispatch policies, plus every bind method exercised in this chapter.*
+
 This is the turning point of the series 🔄 Everything in the previous thirteen chapters — `Property`, `Computed`, `Command`, `ObservableList`, `Validator` — was still just *data*. From here on, data starts **reaching a UI**.
 
 Wiring goes through exactly one class: `BindingEngine`. It knows `IViewAdapter`, which is why switching platforms means switching only the adapter.

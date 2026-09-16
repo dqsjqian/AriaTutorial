@@ -1,5 +1,9 @@
 # Two Pitfalls: Phantom and Circular Dependencies
 
+![Chapter 7 figure: One silently misses updates, the other trips a breaker. Below: how to break the cycle.](../images/ch07-dependency-pitfalls.en.png)
+
+*One silently misses updates, the other trips a breaker. Below: how to break the cycle.*
+
 Automatic dependency tracking is convenient, but it has two boundaries. Stepping over either one does not crash your program — it **behaves differently from what you assumed**, which is the hardest kind of bug to find 🕳️
 
 This chapter turns both into runnable minimal reproductions.

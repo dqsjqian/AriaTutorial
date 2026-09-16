@@ -1,5 +1,9 @@
 # Validator：校验也是响应式的
 
+![第 12 章配图：must 与 should 分成两路，异步校验带来第三种状态 pending。](../images/ch12-validator.zh.png)
+
+*must 与 should 分成两路，异步校验带来第三种状态 pending。*
+
 表单校验通常是这样写的：拿到输入、跑一遍规则、把错误塞进某个变量、让界面去读。
 
 Aria 的 `Validator` 把校验结果本身做成了**响应式状态** —— 它跟着字段值自动重算，你只需要订阅它 ✅

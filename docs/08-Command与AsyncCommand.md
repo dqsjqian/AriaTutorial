@@ -1,5 +1,9 @@
 # Command 与 AsyncCommand：动作也要有状态
 
+![第 8 章配图：上面是 Command 的准入链，下面是 AsyncCommand 的三态与并发策略。](../images/ch08-command.zh.png)
+
+*上面是 Command 的准入链，下面是 AsyncCommand 的三态与并发策略。*
+
 前面几章讲的都是**值**。界面上还有另一类东西：**动作** —— 点击一个按钮会发生什么。
 
 裸 lambda 能表达"做什么"，但表达不了"**现在能不能做**"。而后者恰恰是界面最需要的：表单没填完，提交按钮就该是灰的。

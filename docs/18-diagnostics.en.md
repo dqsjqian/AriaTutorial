@@ -1,5 +1,9 @@
 # Diagnostics: Exporting the Reactive Graph
 
+![Chapter 18 figure: The real dependency graph this chapter's demo prints, and its three exports.](../images/ch18-diagnostics.en.png)
+
+*The real dependency graph this chapter's demo prints, and its three exports.*
+
 The perennial problem with reactive systems is that they are **invisible**: why did this value not refresh? What exactly is the dependency graph? Who is triggering whom?
 
 Aria ships a set of diagnostic interfaces that export the dependency graph as **text, Graphviz, or JSON** 🔍

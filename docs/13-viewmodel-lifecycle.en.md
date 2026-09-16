@@ -1,5 +1,9 @@
 # ViewModel Lifecycle: Activation, Parent-Child, Destroy Hooks
 
+![Chapter 13 figure: Activation is idempotent, the tree propagates, and destroy hooks run last-in-first-out.](../images/ch13-viewmodel.en.png)
+
+*Activation is idempotent, the tree propagates, and destroy hooks run last-in-first-out.*
+
 The previous twelve chapters were about *how values flow*. This one is about the **container**: whether the ViewModel holding those values has a lifecycle of its own.
 
 It does, and it is deliberately small — no event loop, no heavy framework base class. Just three ideas: **activation, parenthood, destruction** 🧬

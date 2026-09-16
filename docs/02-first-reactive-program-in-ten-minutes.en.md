@@ -1,5 +1,9 @@
 # First Reactive Program in Ten Minutes
 
+![Chapter 2 figure: Top: three build steps. Bottom: the runtime data flow -- Property to Computed to bind to output.](../images/ch02-first-program.en.png)
+
+*Top: three build steps. Bottom: the runtime data flow -- Property to Computed to bind to output.*
+
 > The code in this chapter is reproduced verbatim from `demos/ch02_hello/main.cpp`.
 > Source comments are in Chinese, matching the repository.
 

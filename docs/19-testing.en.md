@@ -1,5 +1,9 @@
 # Testing: How to Know Your Reactive Code Is Correct
 
+![Chapter 19 figure: Six groups of tests plus the framework's two conformance suites, the same ones the built-in adapters run.](../images/ch19-testing.en.png)
+
+*Six groups of tests plus the framework's two conformance suites, the same ones the built-in adapters run.*
+
 The previous eighteen chapters were about *how to write*. This one answers a more practical question: **how do I know I wrote it correctly?** 🧪
 
 The good news is that an Aria ViewModel is a plain C++ class — **no window, no event loop, no UI toolkit**. So the vast majority of logic can be tested from a command line.

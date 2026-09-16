@@ -1,5 +1,9 @@
 # BindingEngine：把 Property 接到界面
 
+![第 14 章配图：三种派发策略的时间线，以及本章逐个跑过的绑定方法。](../images/ch14-binding-engine.zh.png)
+
+*三种派发策略的时间线，以及本章逐个跑过的绑定方法。*
+
 这是全书的转折点 🔄 前面 13 章的所有东西 —— `Property`、`Computed`、`Command`、`ObservableList`、`Validator` —— 都还只是"数据"。从这一章起，数据开始**接到界面上**。
 
 接线只有一个类：`BindingEngine`。它认识 `IViewAdapter`，于是换平台只需要换适配器。

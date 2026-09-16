@@ -1,5 +1,9 @@
 # Command and AsyncCommand: Actions Have State Too
 
+![Chapter 8 figure: Top: the gate chain of a Command. Bottom: the three states of an AsyncCommand and its concurrency policies.](../images/ch08-command.en.png)
+
+*Top: the gate chain of a Command. Bottom: the three states of an AsyncCommand and its concurrency policies.*
+
 The previous chapters were all about **values**. A UI also has **actions** — what happens when a button is clicked.
 
 A bare lambda expresses *what to do*, but not *whether it can be done right now*. That second part is exactly what a UI needs: while the form is incomplete, the submit button should be greyed out.

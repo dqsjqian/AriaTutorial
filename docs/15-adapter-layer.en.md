@@ -1,5 +1,9 @@
 # The Adapter Layer: One ViewModel, Five UIs
 
+![Chapter 15 figure: One ViewModel to five kinds of UI, with only BindingEngine and IViewAdapter in between.](../images/ch15-adapters.en.png)
+
+*One ViewModel to five kinds of UI, with only BindingEngine and IViewAdapter in between.*
+
 By now two of Aria's three layers are covered: the **reactive core** (Chapters 3-8) and the **binding layer** (Chapter 14). The last one is the **adapter** 🔌
 
 The adapter is Aria's only contact surface with the outside world. It translates "set this text", "read that checkbox", "listen for a click" into a specific platform's API — and `BindingEngine` knows only one interface: `IViewAdapter`.

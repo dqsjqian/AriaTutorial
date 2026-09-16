@@ -28,9 +28,12 @@ Readers who know Vue, React, or Qt will move faster: `Property` is roughly `ref`
 docs/          20 chapters, Chinese and English (NN-标题.md / NN-english-title.en.md)
 demos/         one runnable target per chapter (ch01_bill … ch20_ecosystem)
 demos/common/  the tutorial in-memory adapter shared across chapters
+images/        one figure per chapter, per language; SVG sources in images/src/
 ```
 
 **Articles and demos share one source, but generated in reverse**: the demo is written and genuinely run first, and the article is produced from its source and stdout. Every snippet in the text can be traced back to `demos/`.
+
+**Figures follow the same constraint.** The diagram under each chapter title is not decoration; it is that chapter's conclusion drawn out -- a data flow, a dependency graph, a state machine, or a timeline. Every number in it (recompute counts, event counts, concurrency timing) comes from that chapter's real demo run, the same data as the ```text blocks in the text. Each figure has an SVG source, so the wording can be changed and the PNG re-exported.
 
 ## Quality bar
 
@@ -40,6 +43,7 @@ This repository enforces "authenticity" as a hard requirement, **checked automat
 |---|---|
 | Code authenticity | Every ```cpp block in an article must be **character-for-character identical** to the corresponding `demos/<chapter>/main.cpp` |
 | Output authenticity | Every ```text block must match the demo's **real stdout character for character** |
+| Figure authenticity | Each article references exactly one figure; the file exists and its pixel size matches its SVG source |
 | Compiles | Every demo must compile (measured with MSVC on Windows; the code itself is cross-platform) |
 
 A single mismatch fails the check. In other words: **every behavioural claim you read can be reproduced by running `build/bin/chNN_xxx` yourself.**

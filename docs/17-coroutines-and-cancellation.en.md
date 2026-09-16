@@ -1,5 +1,9 @@
 # Coroutines, Concurrency, and Cancellation
 
+![Chapter 17 figure: Where blocking_get is allowed, measured when_all concurrency, and the direction cancellation propagates.](../images/ch17-async.en.png)
+
+*Where blocking_get is allowed, measured when_all concurrency, and the direction cancellation propagates.*
+
 Async code used to mean callback hell, then `async` / `await`. Aria's async layer is **C++20 coroutines**: `Task<T>` makes asynchronous code read like synchronous code ⚡
 
 This chapter also documents one **boundary you must respect** — it crashed a program for real while this chapter was being written.
