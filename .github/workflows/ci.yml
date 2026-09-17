@@ -15,7 +15,7 @@ jobs:
       matrix:
         compiler: [gcc, clang]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install toolchain
         run: |
@@ -24,7 +24,7 @@ jobs:
             ${{ matrix.compiler == 'gcc' && 'g++' || 'clang' }}
 
       - name: Checkout Aria
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: dqsjqian/Aria
           path: deps/aria
