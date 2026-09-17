@@ -10,7 +10,7 @@
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#环境要求)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-<img src="images/ch01-why-aria.zh.png" alt="同一份业务逻辑，两种接法：左边同步代码随平台数增长，右边 Aria 只拆一层" width="100%">
+<img src="images/src/ch01-why-aria.zh.svg" alt="同一份业务逻辑，两种接法：左边同步代码随平台数增长，右边 Aria 只拆一层" width="100%">
 
 </div>
 
