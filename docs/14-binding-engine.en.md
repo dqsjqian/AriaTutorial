@@ -1,6 +1,6 @@
 # BindingEngine: Wiring Properties to a UI
 
-![Chapter 14 figure: Timelines for the three dispatch policies, plus every bind method exercised in this chapter.](../images/ch14-binding-engine.en.png)
+![Chapter 14 figure: Timelines for the three dispatch policies, plus every bind method exercised in this chapter.](../images/ch14-binding-engine.en.svg)
 
 *Timelines for the three dispatch policies, plus every bind method exercised in this chapter.*
 

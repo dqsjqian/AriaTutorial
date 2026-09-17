@@ -1,6 +1,6 @@
 # Writing Your Own IViewAdapter: From 25 Pure Virtuals to 5
 
-![Chapter 16 figure: What each of the three layers does, and the fallback path for capabilities you do not override.](../images/ch16-custom-adapter.en.png)
+![Chapter 16 figure: What each of the three layers does, and the fallback path for capabilities you do not override.](../images/ch16-custom-adapter.en.svg)
 
 *What each of the three layers does, and the fallback path for capabilities you do not override.*
 

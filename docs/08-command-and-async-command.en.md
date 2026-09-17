@@ -1,6 +1,6 @@
 # Command and AsyncCommand: Actions Have State Too
 
-![Chapter 8 figure: Top: the gate chain of a Command. Bottom: the three states of an AsyncCommand and its concurrency policies.](../images/ch08-command.en.png)
+![Chapter 8 figure: Top: the gate chain of a Command. Bottom: the three states of an AsyncCommand and its concurrency policies.](../images/ch08-command.en.svg)
 
 *Top: the gate chain of a Command. Bottom: the three states of an AsyncCommand and its concurrency policies.*
 

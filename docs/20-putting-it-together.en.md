@@ -1,6 +1,6 @@
 # Putting It Together: A Todo List Built with Aria
 
-![Chapter 20 figure: The full data flow of TodoViewModel, and the trace of one real interaction.](../images/ch20-todo-app.en.png)
+![Chapter 20 figure: The full data flow of TodoViewModel, and the trace of one real interaction.](../images/ch20-todo-app.en.svg)
 
 *The full data flow of TodoViewModel, and the trace of one real interaction.*
 

@@ -1,6 +1,6 @@
 # batch / untracked / Effect：精确控制通知范围
 
-![第 5 章配图：batch 管通知几次，untracked 管谁算依赖，Effect 管副作用活多久。](../images/ch05-batch-untracked-effect.zh.png)
+![第 5 章配图：batch 管通知几次，untracked 管谁算依赖，Effect 管副作用活多久。](../images/ch05-batch-untracked-effect.zh.svg)
 
 *batch 管通知几次，untracked 管谁算依赖，Effect 管副作用活多久。*
 

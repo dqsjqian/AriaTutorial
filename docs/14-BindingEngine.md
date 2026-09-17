@@ -1,6 +1,6 @@
 # BindingEngine：把 Property 接到界面
 
-![第 14 章配图：三种派发策略的时间线，以及本章逐个跑过的绑定方法。](../images/ch14-binding-engine.zh.png)
+![第 14 章配图：三种派发策略的时间线，以及本章逐个跑过的绑定方法。](../images/ch14-binding-engine.zh.svg)
 
 *三种派发策略的时间线，以及本章逐个跑过的绑定方法。*
 

@@ -5,7 +5,6 @@
 *.ps1 text eol=crlf
 
 # 二进制文件不做行尾转换
-*.png binary
 *.jpg binary
 *.webp binary
 *.gif binary

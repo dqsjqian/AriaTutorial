@@ -1,6 +1,6 @@
 # Derived Views: Filtering, Sorting, Deduplication, Paging
 
-![Chapter 10 figure: Every stage of the chain is a view: change the source once and the chain updates incrementally.](../images/ch10-derived-views.en.png)
+![Chapter 10 figure: Every stage of the chain is a view: change the source once and the chain updates incrementally.](../images/ch10-derived-views.en.svg)
 
 *Every stage of the chain is a view: change the source once and the chain updates incrementally.*
 

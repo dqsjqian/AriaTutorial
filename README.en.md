@@ -10,7 +10,7 @@ Every chapter ships a demo you can compile and run. The code in the articles and
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-<img src="images/ch01-why-aria.en.png" alt="One piece of logic, two ways to wire it: sync code grows with the platform count on the left, Aria splits out one layer on the right" width="100%">
+<img src="images/ch01-why-aria.en.svg" alt="One piece of logic, two ways to wire it: sync code grows with the platform count on the left, Aria splits out one layer on the right" width="100%">
 
 [简体中文](README.md) | English
 
@@ -142,10 +142,9 @@ AriaTutorial/
 │   ├── 01-为什么再造一个C++MVVM框架.md
 │   ├── 01-why-another-cpp-mvvm-framework.en.md
 │   └── ...                     # Chinese docs keep Chinese names; English docs are ASCII + .en.md
-├── images/                     # one figure per chapter, one per language
-│   ├── ch01-why-aria.zh.png
-│   ├── ch01-why-aria.en.png
-│   ├── src/                    # SVG sources: editable and diffable
+├── images/                     # one SVG figure per chapter, one per language
+│   ├── ch01-why-aria.zh.svg
+│   ├── ch01-why-aria.en.svg
 │   └── ...
 └── scripts/
     ├── run-all.ps1
@@ -158,7 +157,7 @@ Every chapter opens with one figure that draws the single idea that chapter is a
 
 The figures follow the same rule as the text: **every number in a figure comes from that chapter's actual demo run**. The recompute counters in chapter 4 (1 to 2 to 3), the edit-operation counts in chapter 11, the measured concurrency time in chapter 17 (62 ms) -- all of them can be reproduced by running `build/bin/chNN_xxx`.
 
-Each figure has an SVG source under `images/src/`, so you can change the wording, the palette, and re-export the PNG.
+Each figure is an SVG under `images/`, so you can change the wording or the palette; GitHub renders vector figures natively, no PNG export needed.
 
 ## How articles and demos stay in sync
 
@@ -168,7 +167,7 @@ The articles were not written first and illustrated afterwards. They were **deri
 |---|---|
 | Code | Every ```cpp block in an article is **character-for-character identical** to `demos/chNN_xxx/main.cpp` |
 | Output | Every ```text block is a **verbatim copy of real stdout** from that demo |
-| Figures | Each article references exactly one figure; the file exists and its pixel size matches its SVG source |
+| Figures | Each article references exactly one figure; the file exists and the article references the SVG source itself |
 
 Every behavioural claim in the text can therefore be reproduced by running `build/bin/chNN_xxx` yourself.
 

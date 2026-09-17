@@ -1,6 +1,6 @@
 # Command 与 AsyncCommand：动作也要有状态
 
-![第 8 章配图：上面是 Command 的准入链，下面是 AsyncCommand 的三态与并发策略。](../images/ch08-command.zh.png)
+![第 8 章配图：上面是 Command 的准入链，下面是 AsyncCommand 的三态与并发策略。](../images/ch08-command.zh.svg)
 
 *上面是 Command 的准入链，下面是 AsyncCommand 的三态与并发策略。*
 

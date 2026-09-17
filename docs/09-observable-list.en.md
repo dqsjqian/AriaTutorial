@@ -1,6 +1,6 @@
 # ObservableList: A List That Announces Its Changes
 
-![Chapter 9 figure: What each of the six event kinds carries, plus the real event stream this chapter's demo prints.](../images/ch09-observable-list.en.png)
+![Chapter 9 figure: What each of the six event kinds carries, plus the real event stream this chapter's demo prints.](../images/ch09-observable-list.en.svg)
 
 *What each of the six event kinds carries, plus the real event stream this chapter's demo prints.*
 

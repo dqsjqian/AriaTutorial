@@ -1,6 +1,6 @@
 # First Reactive Program in Ten Minutes
 
-![Chapter 2 figure: Top: three build steps. Bottom: the runtime data flow -- Property to Computed to bind to output.](../images/ch02-first-program.en.png)
+![Chapter 2 figure: Top: three build steps. Bottom: the runtime data flow -- Property to Computed to bind to output.](../images/ch02-first-program.en.svg)
 
 *Top: three build steps. Bottom: the runtime data flow -- Property to Computed to bind to output.*
 

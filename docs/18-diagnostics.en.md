@@ -1,6 +1,6 @@
 # Diagnostics: Exporting the Reactive Graph
 
-![Chapter 18 figure: The real dependency graph this chapter's demo prints, and its three exports.](../images/ch18-diagnostics.en.png)
+![Chapter 18 figure: The real dependency graph this chapter's demo prints, and its three exports.](../images/ch18-diagnostics.en.svg)
 
 *The real dependency graph this chapter's demo prints, and its three exports.*
 

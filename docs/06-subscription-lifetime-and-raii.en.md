@@ -1,6 +1,6 @@
 # Subscription: Expressing Subscription Lifetime with Scope
 
-![Chapter 6 figure: Four ways to disconnect, all driven by object lifetime rather than by remembering to call something.](../images/ch06-subscription.en.png)
+![Chapter 6 figure: Four ways to disconnect, all driven by object lifetime rather than by remembering to call something.](../images/ch06-subscription.en.svg)
 
 *Four ways to disconnect, all driven by object lifetime rather than by remembering to call something.*
 

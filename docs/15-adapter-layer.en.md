@@ -1,6 +1,6 @@
 # The Adapter Layer: One ViewModel, Five UIs
 
-![Chapter 15 figure: One ViewModel to five kinds of UI, with only BindingEngine and IViewAdapter in between.](../images/ch15-adapters.en.png)
+![Chapter 15 figure: One ViewModel to five kinds of UI, with only BindingEngine and IViewAdapter in between.](../images/ch15-adapters.en.svg)
 
 *One ViewModel to five kinds of UI, with only BindingEngine and IViewAdapter in between.*
 
