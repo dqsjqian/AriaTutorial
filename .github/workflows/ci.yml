@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  demos:
+    name: Build & run all demos (${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build \
+            ${{ matrix.compiler == 'gcc' && 'g++' || 'clang' }}
+
+      - name: Checkout Aria
+        uses: actions/checkout@v4
+        with:
+          repository: dqsjqian/Aria
+          path: deps/aria
+
+      - name: Configure
+        env:
+          CC: ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler == 'gcc' && 'g++' || 'clang++' }}
+        run: >
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DARIA_ROOT=${{ github.workspace }}/deps/aria
+
+      - name: Build
+        run: cmake --build build -j
+
+      - name: Run all demos
+        run: |
+          set -e
+          PASSED=0; FAILED=0
+          for exe in build/bin/ch*; do
+            [ -x "$exe" ] || continue
+            name=$(basename "$exe")
+            if timeout 30 "$exe" > "/tmp/$name.log" 2>&1; then
+              PASSED=$((PASSED+1))
+            else
+              code=$?
+              FAILED=$((FAILED+1))
+              echo "::error::demo $name exited $code"
+              tail -5 "/tmp/$name.log" || true
+            fi
+          done
+          echo "Demos passed: $PASSED, failed: $FAILED"
+          [ "$FAILED" -eq 0 ]
