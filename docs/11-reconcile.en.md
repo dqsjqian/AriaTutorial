@@ -1,6 +1,6 @@
 # reconcile: Refreshing a List from Fresh Data
 
-![Chapter 11 figure: reconcile returns the number of edit operations, not the number of changed rows. Below: measured values for five scenarios.](../images/ch11-reconcile.en.png)
+![Chapter 11 figure: reconcile returns the number of edit operations, not the number of changed rows. Below: measured values for five scenarios.](../images/ch11-reconcile.en.svg)
 
 *reconcile returns the number of edit operations, not the number of changed rows. Below: measured values for five scenarios.*
 

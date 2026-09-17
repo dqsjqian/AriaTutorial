@@ -1,6 +1,6 @@
 # Coroutines, Concurrency, and Cancellation
 
-![Chapter 17 figure: Where blocking_get is allowed, measured when_all concurrency, and the direction cancellation propagates.](../images/ch17-async.en.png)
+![Chapter 17 figure: Where blocking_get is allowed, measured when_all concurrency, and the direction cancellation propagates.](../images/ch17-async.en.svg)
 
 *Where blocking_get is allowed, measured when_all concurrency, and the direction cancellation propagates.*
 

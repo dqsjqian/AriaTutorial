@@ -1,6 +1,6 @@
 # Two Pitfalls: Phantom and Circular Dependencies
 
-![Chapter 7 figure: One silently misses updates, the other trips a breaker. Below: how to break the cycle.](../images/ch07-dependency-pitfalls.en.png)
+![Chapter 7 figure: One silently misses updates, the other trips a breaker. Below: how to break the cycle.](../images/ch07-dependency-pitfalls.en.svg)
 
 *One silently misses updates, the other trips a breaker. Below: how to break the cycle.*
 

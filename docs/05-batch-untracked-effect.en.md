@@ -1,6 +1,6 @@
 # batch / untracked / Effect: Controlling the Scope of Notification
 
-![Chapter 5 figure: batch controls how many notifications fire, untracked controls what counts as a dependency, Effect controls how long a side effect lives.](../images/ch05-batch-untracked-effect.en.png)
+![Chapter 5 figure: batch controls how many notifications fire, untracked controls what counts as a dependency, Effect controls how long a side effect lives.](../images/ch05-batch-untracked-effect.en.svg)
 
 *batch controls how many notifications fire, untracked controls what counts as a dependency, Effect controls how long a side effect lives.*
 

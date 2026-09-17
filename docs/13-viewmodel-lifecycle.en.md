@@ -1,6 +1,6 @@
 # ViewModel Lifecycle: Activation, Parent-Child, Destroy Hooks
 
-![Chapter 13 figure: Activation is idempotent, the tree propagates, and destroy hooks run last-in-first-out.](../images/ch13-viewmodel.en.png)
+![Chapter 13 figure: Activation is idempotent, the tree propagates, and destroy hooks run last-in-first-out.](../images/ch13-viewmodel.en.svg)
 
 *Activation is idempotent, the tree propagates, and destroy hooks run last-in-first-out.*
 

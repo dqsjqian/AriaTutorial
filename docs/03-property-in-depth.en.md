@@ -1,6 +1,6 @@
 # Property in Depth: Reading, Tracking, and the Equality Gate
 
-![Chapter 3 figure: Left: the two branches of a write. Right: three subscription timings and two ways to read.](../images/ch03-property.en.png)
+![Chapter 3 figure: Left: the two branches of a write. Right: three subscription timings and two ways to read.](../images/ch03-property.en.svg)
 
 *Left: the two branches of a write. Right: three subscription timings and two ways to read.*
 

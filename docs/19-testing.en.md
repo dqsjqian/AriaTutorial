@@ -1,6 +1,6 @@
 # Testing: How to Know Your Reactive Code Is Correct
 
-![Chapter 19 figure: Six groups of tests plus the framework's two conformance suites, the same ones the built-in adapters run.](../images/ch19-testing.en.png)
+![Chapter 19 figure: Six groups of tests plus the framework's two conformance suites, the same ones the built-in adapters run.](../images/ch19-testing.en.svg)
 
 *Six groups of tests plus the framework's two conformance suites, the same ones the built-in adapters run.*
 

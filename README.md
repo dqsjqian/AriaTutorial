@@ -10,7 +10,7 @@
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#环境要求)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-<img src="images/src/ch01-why-aria.zh.svg" alt="同一份业务逻辑，两种接法：左边同步代码随平台数增长，右边 Aria 只拆一层" width="100%">
+<img src="images/ch01-why-aria.zh.svg" alt="同一份业务逻辑，两种接法：左边同步代码随平台数增长，右边 Aria 只拆一层" width="100%">
 
 </div>
 
@@ -137,10 +137,9 @@ AriaTutorial/
 │   ├── 01-为什么再造一个C++MVVM框架.md
 │   ├── 01-why-another-cpp-mvvm-framework.en.md
 │   └── ...                     # 中文用中文文件名，英文版一律 ASCII 名 + .en.md
-├── images/                     # 每章一张配图，中英各一版
-│   ├── ch01-why-aria.zh.png
-│   ├── ch01-why-aria.en.png
-│   ├── src/                    # 配图的 SVG 源文件，可编辑、可 diff
+├── images/                     # 每章一张配图（SVG 矢量，中英各一版），可编辑、可 diff
+│   ├── ch01-why-aria.zh.svg
+│   ├── ch01-why-aria.en.svg
 │   └── ...
 └── scripts/
     ├── run-all.ps1
@@ -153,7 +152,7 @@ AriaTutorial/
 
 配图不是凭空画的示意图，它们与正文一样受同一条规则约束：**图里出现的每个数字都来自该章 demo 的真实运行结果**。比如第 4 章的重算次数（1 → 2 → 3）、第 11 章的编辑操作计数、第 17 章的并发实测耗时（62ms），都能靠 `build/bin/chNN_xxx` 亲手复现。
 
-图有 SVG 源文件（`images/src/*.svg`），可以改文案、改配色、重新导出 PNG。
+配图本身就是 SVG（`images/*.svg`），可以改文案、改配色；GitHub 原生渲染矢量图，不需要再导出 PNG。
 
 ## 正文与 demo 的一致性
 
@@ -163,7 +162,7 @@ AriaTutorial/
 |---|---|
 | 代码真实性 | 正文里每段 ```cpp 代码块，与 `demos/chNN_xxx/main.cpp` **逐字一致** |
 | 输出真实性 | 正文里每段 ```text 输出块，是该 demo **真实 stdout 的逐字拷贝** |
-| 配图真实性 | 每篇恰好一张配图，文件存在，且像素尺寸与它的 SVG 源对得上 |
+| 配图真实性 | 每篇恰好一张配图，文件存在，正文引用的就是 SVG 源文件本身 |
 
 所以你在正文里看到的每一条行为描述，都可以靠 `build/bin/chNN_xxx` 亲手复现。
 

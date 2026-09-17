@@ -1,6 +1,6 @@
 # ObservableList：会通知变化的列表
 
-![第 9 章配图：六种事件各自携带什么字段，以及本章 demo 打印出来的真实事件流。](../images/ch09-observable-list.zh.png)
+![第 9 章配图：六种事件各自携带什么字段，以及本章 demo 打印出来的真实事件流。](../images/ch09-observable-list.zh.svg)
 
 *六种事件各自携带什么字段，以及本章 demo 打印出来的真实事件流。*
 

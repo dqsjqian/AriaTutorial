@@ -1,6 +1,6 @@
 # Validator: Validation Is Reactive Too
 
-![Chapter 12 figure: must and should split into two paths, and async validation adds a third state: pending.](../images/ch12-validator.en.png)
+![Chapter 12 figure: must and should split into two paths, and async validation adds a third state: pending.](../images/ch12-validator.en.svg)
 
 *must and should split into two paths, and async validation adds a third state: pending.*
 

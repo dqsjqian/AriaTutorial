@@ -1,6 +1,6 @@
 # The Magic of Computed: How Automatic Dependency Tracking Works
 
-![Chapter 4 figure: Top: the dependency set follows the branch. Bottom: when recomputation happens -- note step 2, it recomputes before anyone reads.](../images/ch04-computed.en.png)
+![Chapter 4 figure: Top: the dependency set follows the branch. Bottom: when recomputation happens -- note step 2, it recomputes before anyone reads.](../images/ch04-computed.en.svg)
 
 *Top: the dependency set follows the branch. Bottom: when recomputation happens -- note step 2, it recomputes before anyone reads.*
 

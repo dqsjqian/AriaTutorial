@@ -1,6 +1,6 @@
 # reconcile：用一份新数据刷新列表
 
-![第 11 章配图：reconcile 返回的是编辑操作数，不是「变了几个」；下面是五个场景的实测值。](../images/ch11-reconcile.zh.png)
+![第 11 章配图：reconcile 返回的是编辑操作数，不是「变了几个」；下面是五个场景的实测值。](../images/ch11-reconcile.zh.svg)
 
 *reconcile 返回的是编辑操作数，不是「变了几个」；下面是五个场景的实测值。*
 

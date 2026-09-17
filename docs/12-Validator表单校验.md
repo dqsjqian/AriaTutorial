@@ -1,6 +1,6 @@
 # Validator：校验也是响应式的
 
-![第 12 章配图：must 与 should 分成两路，异步校验带来第三种状态 pending。](../images/ch12-validator.zh.png)
+![第 12 章配图：must 与 should 分成两路，异步校验带来第三种状态 pending。](../images/ch12-validator.zh.svg)
 
 *must 与 should 分成两路，异步校验带来第三种状态 pending。*
 
