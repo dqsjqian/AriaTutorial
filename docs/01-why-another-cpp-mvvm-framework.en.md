@@ -202,21 +202,21 @@ One thing must be stated plainly: **you do not write the UI in C++** 🔨 Button
 
 ---
 
-## ⚠️ Know the cost before you choose it
+## Design philosophy and engineering strength
 
-This section matters more than everything above. Aria makes deliberate trade-offs, and **it is not for everyone**.
+Aria is designed for industrial-grade cross-platform software: **one C++ business core, native experiences, and explicit engineering contracts.** Clear responsibilities for state, coroutines, and binding make complex applications easier to evolve.
 
-| Trade-off | Detail |
+| Architectural strength | Engineering design |
 |---|---|
-| 🧩 **C++20 minimum** | Requires full coroutines and concepts (GCC 12+ / Clang 15+ / MSVC v143). C++17 projects are out. |
-| 🎨 **No widgets** | Aria draws nothing. Widgets, layout, and animation stay with your UI toolkit. |
-| 🔗 **Templates are source-compatible only** | `aria-abi` / `aria-runtime` / `aria-binding` are ABI-stable within a major version; templates like `Property<T>` need a recompile across versions. |
-| 🔧 **You may need to write an adapter** | Five ship out of the box: Qt6 / AppKit / UIKit / JNI / HTTP. A new toolkit means implementing `IViewAdapter`. |
-| 🌱 **Young project** | Ecosystem, tutorials, and third-party components cannot match mature frameworks. Today AriaTools is the one real application using it. |
+| **Modern C++ foundation** | C++20 minimum, C++23 supported, with full coroutines and concepts (GCC 12+ / Clang 15+ / MSVC v143). Integrating projects must use C++20 or later. |
+| **Native UI freedom** | Your UI toolkit owns widgets, layout, and animation. Aria unifies the data flow between state and views, sharing business logic while preserving native experiences. |
+| **Layered compatibility** | `aria-abi` / `aria-runtime` / `aria-binding` maintain ABI stability within a major version, with matching compiler, standard library, and build options. Rebuild templates such as `Property<T>` and their containing types after updates. |
+| **Open adapter protocol** | Qt6 / AppKit / UIKit / JNI / HTTP ship out of the box. Integrate other UI toolkits by implementing `IViewAdapter`. |
+| **Applications and learning path** | AriaTools, AriaAgent, and OpenRead demonstrate cross-platform workbenches, agent GUIs, and reading engines. This tutorial explains framework design and integration through 20 chapters in Chinese and English with accompanying demos. |
 
-✅ **Good fit**: you already have a C++ core, need that logic on multiple platforms, and want each platform to keep its native UI.
+**Designed for shared C++ business logic, native multi-platform UIs, and long-term maintenance.** Aria owns business state and binding; the chosen UI toolkit owns rendering and UI reuse. An explicit adapter protocol connects the two.
 
-❌ **Bad fit**: you want "one codebase including the UI". That is the territory of full UI frameworks like Flutter and Qt Quick — Aria does not try to replace them.
+Building to the engineering standards of world-class industrial software means making design decisions verifiable: lifecycle, threading, and error handling have [engineering contracts](https://github.com/dqsjqian/Aria/tree/main/docs/reference), backed by automated tests, fuzz testing, and reproducible performance benchmarks.
 
 ---
 
@@ -226,7 +226,7 @@ This section matters more than everything above. Aria makes deliberate trade-off
 - 🧷 Every existing option bundles reactivity with one specific UI framework, leaving a C++ core outside;
 - ✂️ Aria splits exactly one layer: reactive engine plus binding, as a plain C++ library, with UI attached through `IViewAdapter`;
 - 🎁 What you gain: automatic dependency tracking in `Property` / `Computed`, intermediate states suppressed by `batch`, and equal writes dropped — **with zero sync code written by you**;
-- ⚖️ What it costs: C++20 minimum, no widgets, young ecosystem. If that is unacceptable, do not pick it.
+- **Engineering delivery**: build on C++20/23, share business logic, and preserve native UIs. Explicit compatibility rules and an open adapter protocol support cross-platform delivery and long-term maintenance.
 
 ---
 

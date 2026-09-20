@@ -20,7 +20,9 @@ Every chapter ships a demo you can compile and run. The code in the articles and
 
 ## What this is
 
-[Aria](https://github.com/dqsjqian/Aria) is a C++ MVVM library that lifts the reactive engine and the binding layer out of any UI framework. A ViewModel is a plain C++ class — no framework base class, no macros, no code generator — and switching UI toolkits never touches business logic.
+[Aria](https://github.com/dqsjqian/Aria) is a modern C++ MVVM framework for industrial-grade cross-platform software, unifying reactive state, asynchronous coroutines, and binding independently of UI toolkits. A ViewModel is a plain C++ class, with no required framework base class, macros, or code generator. One business core drives native UIs across platforms.
+
+This tutorial puts that architectural elegance and engineering discipline into practice: from state updates to asynchronous cancellation, incremental collections, and platform adapters, you build maintainable cross-platform software in code.
 
 This tutorial series runs through five stages — fundamentals, reactive core, collections and forms, architecture and adapters, mastery — in 20 chapters. Each chapter comes with a minimal demo that compiles, runs, and prints something. Every output block you see in the articles is real stdout from those programs.
 
