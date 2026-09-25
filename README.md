@@ -111,8 +111,8 @@ cmake --build build -j
 | 项 | 要求 |
 |---|---|
 | CMake | >= 3.20 |
-| 编译器 | MSVC v143+ (VS 2022/2026) / GCC 12+ / Clang 15+ |
-| C++ 标准 | C++20 最低，可用 `-DCMAKE_CXX_STANDARD=23` 切到 C++23 |
+| 编译器 | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ |
+| C++ 标准 | C++23 基线（随 Aria 框架要求） |
 | 其他依赖 | 无。demo 只依赖 `aria::core`，不涉及 UI 工具包 |
 
 > 第 15 章涉及 Qt6 与 HTTP 适配器，对应的两个 demo 默认不参与构建，需要 `-DARIA_TUTORIAL_QT6=ON` / `-DARIA_TUTORIAL_HTTP=ON` 才会启用。正文会单独说明。

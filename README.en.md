@@ -116,8 +116,8 @@ All articles are available in Chinese and English.
 | Item | Requirement |
 |---|---|
 | CMake | >= 3.20 |
-| Compiler | MSVC v143+ (VS 2022/2026) / GCC 12+ / Clang 15+ |
-| C++ standard | C++20 minimum; `-DCMAKE_CXX_STANDARD=23` for C++23 |
+| Compiler | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ |
+| C++ standard | C++23 baseline (required by the Aria framework) |
 | Other dependencies | None. The demos need only `aria::core`, with no UI toolkit involved |
 
 > Chapter 15 covers the Qt6 and HTTP adapters. Its two demos are excluded from the default build and require `-DARIA_TUTORIAL_QT6=ON` / `-DARIA_TUTORIAL_HTTP=ON`. The chapter explains this in detail.

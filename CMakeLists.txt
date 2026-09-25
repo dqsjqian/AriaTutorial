@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(aria_tutorial LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -16,7 +16,7 @@ endif()
 # 可选章节开关：第 15 章需要 Qt6，第 16 章需要 Aria 的 HTTP 适配器
 # ---------------------------------------------------------------------------
 option(ARIA_TUTORIAL_QT6  "构建第 15 章：Qt6 适配器示例（需 Qt6）"       OFF)
-option(ARIA_TUTORIAL_HTTP "构建第 16 章：HTTP 适配器示例（需 HTTP 模块）" OFF)
+option(ARIA_TUTORIAL_HTTP "构建第 15 章：HTTP 适配器示例（需 HTTP 模块）" OFF)
 
 # ---------------------------------------------------------------------------
 # 定位 Aria：优先用已安装的 SDK，其次用 ARIA_ROOT 指向的源码树
