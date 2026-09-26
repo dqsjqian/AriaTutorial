@@ -14,11 +14,11 @@ The previous chapter explained what problem Aria exists to solve. This one actua
 | Item | Requirement |
 |---|---|
 | CMake | >= 3.20 |
-| Compiler | MSVC v143+ (VS 2022/2026) / GCC 12+ / Clang 15+ |
-| C++ standard | C++20 minimum; `-DCMAKE_CXX_STANDARD=23` for C++23 |
+| Compiler | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ |
+| C++ standard | C++23 baseline (required by the Aria framework) |
 | Other dependencies | None. This chapter's demo only needs `aria::core` |
 
-**Why the floor is C++20** 🤔 Aria uses full coroutines and concepts, so C++17 cannot compile it. This is not a style preference — the entire `aria::async` layer is built on coroutines.
+**Why the floor is C++23** 🤔 Aria's async layer `aria::async` is built entirely on coroutines, and the HTTP transport [Continuo](https://github.com/dqsjqian/continuo) additionally requires `std::expected` and `std::stop_token` — a hard dependency, not a style preference. The tested floor: GCC 14+ (GCC 13 has an ICE on move-only coroutine consumers), Clang 19+ on Linux (clang-18's concepts macro makes libstdc++ hide `std::expected`).
 
 ---
 
@@ -240,7 +240,7 @@ There is a real benefit to this design in UI code: `Subscription` is normally st
 | Symptom | Cause and fix |
 |---|---|
 | `未找到 Aria` | Neither an SDK nor `-DARIA_ROOT` was provided. Add `-DARIA_ROOT=<path-to-Aria>`. |
-| `CMAKE_CXX_STANDARD` errors | Compiler too old. Confirm GCC 12+ / Clang 15+ / MSVC v143+. |
+| `CMAKE_CXX_STANDARD` errors | Compiler too old. Confirm GCC 14+ / Clang 19+ / MSVC v143+. |
 | `cl.exe` not found (Windows) | Open the terminal via Developer PowerShell for VS. |
 | `aria_abi.dll` not found at runtime | Run the executables from `build/bin/`; that directory holds the exe and its runtime libraries together. |
 | Garbled Chinese output (MSVC) | This project already passes `/utf-8`; remember to add it to your own project too. |

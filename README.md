@@ -7,7 +7,7 @@
 每章一个独立可跑的 demo，正文代码与仓库代码同源，照着敲就能跑通。
 
 [![Aria](https://img.shields.io/badge/Aria-2.0-blue.svg)](https://github.com/dqsjqian/Aria)
-[![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#环境要求)
+[![C++](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](#环境要求)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <img src="images/ch01-why-aria.zh.svg" alt="同一份业务逻辑，两种接法：左边同步代码随平台数增长，右边 Aria 只拆一层" width="100%">
