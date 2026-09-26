@@ -18,7 +18,7 @@ The previous chapter explained what problem Aria exists to solve. This one actua
 | C++ standard | C++23 baseline (required by the Aria framework) |
 | Other dependencies | None. This chapter's demo only needs `aria::core` |
 
-**Why the floor is C++23** 🤔 Aria's async layer `aria::async` is built entirely on coroutines, and the HTTP transport [Continuo](https://github.com/dqsjqian/continuo) additionally requires `std::expected` and `std::stop_token` — a hard dependency, not a style preference. The tested floor: GCC 14+ (GCC 13 has an ICE on move-only coroutine consumers), Clang 19+ on Linux (clang-18's concepts macro makes libstdc++ hide `std::expected`).
+**Why the floor is C++23** 🤔 Aria's async layer `aria::async` is built entirely on coroutines, and the HTTP transport [Mira](https://github.com/dqsjqian/Mira) additionally requires `std::expected` and `std::stop_token` — a hard dependency, not a style preference. The tested floor: GCC 14+ (GCC 13 has an ICE on move-only coroutine consumers), Clang 19+ on Linux (clang-18's concepts macro makes libstdc++ hide `std::expected`).
 
 ---
 
