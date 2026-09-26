@@ -212,7 +212,7 @@ Aria is designed for industrial-grade cross-platform software: **one C++ busines
 | **Native UI freedom** | Your UI toolkit owns widgets, layout, and animation. Aria unifies the data flow between state and views, sharing business logic while preserving native experiences. |
 | **Layered compatibility** | `aria-abi` / `aria-runtime` / `aria-binding` maintain ABI stability within a major version, with matching compiler, standard library, and build options. Rebuild templates such as `Property<T>` and their containing types after updates. |
 | **Open adapter protocol** | Qt6 / AppKit / UIKit / JNI / HTTP ship out of the box. Integrate other UI toolkits by implementing `IViewAdapter`. |
-| **Applications and learning path** | AriaTools, AriaAgent, and OpenRead demonstrate cross-platform workbenches, agent GUIs, and reading engines. This tutorial explains framework design and integration through 20 chapters in Chinese and English with accompanying demos. |
+| **Applications and learning path** | AriaTools, AriaAgent, and AriaRead demonstrate cross-platform workbenches, agent GUIs, and reading engines. This tutorial explains framework design and integration through 20 chapters in Chinese and English with accompanying demos. |
 
 **Designed for shared C++ business logic, native multi-platform UIs, and long-term maintenance.** Aria owns business state and binding; the chosen UI toolkit owns rendering and UI reuse. An explicit adapter protocol connects the two.
 

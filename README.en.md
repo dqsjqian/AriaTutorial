@@ -7,7 +7,7 @@
 Every chapter ships a demo you can compile and run. The code in the articles and the code in the repository are the same code.
 
 [![Aria](https://img.shields.io/badge/Aria-2.0-blue.svg)](https://github.com/dqsjqian/Aria)
-[![C++](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](#requirements)
+[![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <img src="images/ch01-why-aria.en.svg" alt="One piece of logic, two ways to wire it: sync code grows with the platform count on the left, Aria splits out one layer on the right" width="100%">
@@ -182,7 +182,7 @@ Every behavioural claim in the text can therefore be reproduced by running `buil
 | [Aria](https://github.com/dqsjqian/Aria) | The framework: reactive core, binding layer, five adapters |
 | [AriaTools](https://github.com/dqsjqian/AriaTools) | Flagship example: one ViewModel driving Qt / iOS / Android / Web |
 | [AriaAgent](https://github.com/dqsjqian/AriaAgent) | Provider-agnostic LLM agent GUI |
-| [OpenRead](https://github.com/dqsjqian/OpenRead) | Cross-platform book-source engine with an HTTP-adapter web UI |
+| [AriaRead](https://github.com/dqsjqian/AriaRead) | Cross-platform book-source engine with an HTTP-adapter web UI |
 
 ## License
 
