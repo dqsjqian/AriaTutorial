@@ -6,8 +6,9 @@
 
 Every chapter ships a demo you can compile and run. The code in the articles and the code in the repository are the same code.
 
-[![Aria](https://img.shields.io/badge/Aria-3.0-blue.svg)](https://github.com/dqsjqian/Aria)
-[![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#requirements)
+[![Release](https://img.shields.io/badge/release-0.1.0-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.1.0)
+[![Aria](https://img.shields.io/badge/Aria-3.0.1-blue.svg)](https://github.com/dqsjqian/Aria)
+[![C++](https://img.shields.io/badge/C%2B%2B-23-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <img src="images/ch01-why-aria.en.svg" alt="One piece of logic, two ways to wire it: sync code grows with the platform count on the left, Aria splits out one layer on the right" width="100%">
