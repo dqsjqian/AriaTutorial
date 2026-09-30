@@ -28,7 +28,7 @@ jobs:
         with:
           repository: dqsjqian/Aria
           path: deps/aria
-          ref: 3ff3f1047679363f576e5149b44f1119ec4d9efe
+          ref: 202f0b8e56a5572bf6f6e1f018ccbdd112690ed6
 
       - name: Configure
         env:
@@ -54,7 +54,7 @@ jobs:
         with:
           repository: dqsjqian/Aria
           path: deps/aria
-          ref: 3ff3f1047679363f576e5149b44f1119ec4d9efe
+          ref: 202f0b8e56a5572bf6f6e1f018ccbdd112690ed6
       - name: Build and install shared SDK
         run: |
           cmake -S deps/aria -B build/sdk-build -DARIA_BUILD_TESTS=OFF -DARIA_BUILD_BENCHMARK=OFF -DARIA_BUILD_SHARED=ON "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/sdk"
