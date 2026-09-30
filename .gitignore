@@ -7,6 +7,14 @@ cmake-build-*/
 *.user
 compile_commands.json
 CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Generated diagnostic logs
+*.log
+*.logg
+*.err
 
 # Local Python environments, caches and private settings
 __pycache__/

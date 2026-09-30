@@ -85,7 +85,7 @@ This is the **teaching companion** to [Aria](https://github.com/dqsjqian/Aria), 
 
 Corrections, additional examples, and improvements to the bilingual text are welcome. Two rules:
 
-1. **If you change a demo's source, update the corresponding article's code and output blocks in the same change**, or the check will fail;
+1. **If you change a demo's source, update the corresponding article's code and output blocks in the same change**, and verify them during review;
 2. **Never write "illustrative output" in an article** — either run it, or leave it out.
 
 For a new chapter, an Issue outlining the plan first is appreciated.
