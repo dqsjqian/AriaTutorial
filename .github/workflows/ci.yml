@@ -23,12 +23,11 @@ jobs:
           sudo apt-get install -y ninja-build \
             ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang-19' }}
 
-      - name: Checkout Aria
-        uses: actions/checkout@v7
-        with:
-          repository: dqsjqian/Aria
-          path: deps/aria
-          ref: 202f0b8e56a5572bf6f6e1f018ccbdd112690ed6
+      - name: Verify dependency selection and fetch safety
+        run: python3 -m unittest discover -s tools/ci -p 'test_*.py'
+
+      - name: Fetch locked Aria
+        run: python3 tools/ci/fetch_aria.py
 
       - name: Configure
         env:
@@ -36,7 +35,7 @@ jobs:
           CXX: ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang++-19' }}
         run: >
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-          -DARIA_ROOT=${{ github.workspace }}/deps/aria
+          -DARIA_ROOT=${{ github.workspace }}/build/deps/aria
 
       - name: Build
         run: cmake --build build -j
@@ -49,15 +48,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Checkout pinned Aria
-        uses: actions/checkout@v7
-        with:
-          repository: dqsjqian/Aria
-          path: deps/aria
-          ref: 202f0b8e56a5572bf6f6e1f018ccbdd112690ed6
+      - name: Verify dependency selection and fetch safety
+        run: python -m unittest discover -s tools/ci -p 'test_*.py'
+      - name: Fetch locked Aria
+        run: python tools/ci/fetch_aria.py
       - name: Build and install shared SDK
         run: |
-          cmake -S deps/aria -B build/sdk-build -DARIA_BUILD_TESTS=OFF -DARIA_BUILD_BENCHMARK=OFF -DARIA_BUILD_SHARED=ON "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/sdk"
+          cmake -S build/deps/aria -B build/sdk-build -DARIA_BUILD_TESTS=OFF -DARIA_BUILD_BENCHMARK=OFF -DARIA_BUILD_SHARED=ON "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/sdk"
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cmake --build build/sdk-build --config Release --parallel 3
           if ($LASTEXITCODE) { exit $LASTEXITCODE }

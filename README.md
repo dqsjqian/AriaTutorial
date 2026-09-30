@@ -2,6 +2,8 @@
 
 # AriaTutorial
 
+[依赖更新完整指南](docs/dependencies.md) — 版本固定、选择性更新、离线、回退与提交步骤。
+
 **Aria 从入门到精通 · 20 篇中文教程 + 可运行 demo**
 
 每章一个独立可跑的 demo，正文代码与仓库代码同源，照着敲就能跑通。
@@ -59,6 +61,16 @@ cmake --build build -j
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
 ```
+
+源码方式也可先运行 `python tools/ci/fetch_aria.py`，再传入 `-DARIA_ROOT=build/deps/aria`。显式 `ARIA_ROOT` 直接使用所选源码树；嵌入 Aria 时共享本教程根目录的依赖请求与锁。
+
+根目录唯一的 `dependencies.json` 同时保存版本请求与每项的 `resolved` 结果。没有显式版本、也没有匹配锁时，首次解析最新稳定版并记录版本、提交和 SHA256；已有锁会直接复用，普通构建不会追随新发布。显式版本优先，例如 `python tools/ci/fetch_aria.py --version 3.0.1`（优先于 `ARIA_DEP_ARIA_VERSION`）；主动升级 Aria 使用 `python tools/ci/fetch_aria.py --update`。
+
+C++ 库可用 `-DARIA_DEP_JSON_VERSION=3.12.0`、`-DARIA_DEP_MIRA_VERSION=0.4.0`、`-DARIA_DEP_OPENSSL_VERSION=4.0.3` 等覆盖；CMake 将临时覆盖写入构建目录的解析缓存，不修改源码中的 `dependencies.json`。要更新并保存共享锁，运行 `python tools/ci/update_dependencies.py`，审查变更后提交这一份依赖文件。显式源码覆盖和父工程已提供的依赖目标继续优先。
+
+Qt 使用已安装的 SDK，不自动下载安装。未指定版本时优先选择可发现的最新版本；`-DARIA_DEP_QT_VERSION=6.8.3` 要求精确版本，`Qt6_DIR` / `CMAKE_PREFIX_PATH` 可指定 SDK 所在位置。
+
+安装 SDK 方式不重新获取或重建 SDK 的第三方库，默认查找可发现的最新兼容 Aria 3.x SDK。可用 `-DARIA_DEP_ARIA_VERSION=3.0.1` 要求精确 SDK 版本，并用 `aria_DIR` / `CMAKE_PREFIX_PATH` 指定位置。源码方式优先于 SDK 查找。
 
 也可以直接用一键脚本：
 

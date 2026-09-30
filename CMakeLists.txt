@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 project(aria_tutorial VERSION 0.1.0 LANGUAGES CXX)
 
+set(ARIA_DEPENDENCIES_FILE "${CMAKE_CURRENT_SOURCE_DIR}/dependencies.json" CACHE FILEPATH
+    "Shared dependency requests and resolved versions")
+set(ARIA_DEP_ARIA_VERSION "$ENV{ARIA_DEP_ARIA_VERSION}" CACHE STRING
+    "Exact installed Aria SDK version (explicit ARIA_ROOT still takes precedence)")
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -43,7 +48,16 @@ else()
   if(ARIA_TUTORIAL_HTTP)
     list(APPEND _aria_components http)
   endif()
-  find_package(aria 3.0 REQUIRED CONFIG COMPONENTS ${_aria_components})
+  # Respect an explicit SDK prefix/version. Otherwise choose the newest
+  # compatible SDK in the configured package search paths.
+  set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
+  set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
+  if(ARIA_DEP_ARIA_VERSION)
+    string(REGEX REPLACE "^v" "" _aria_sdk_version "${ARIA_DEP_ARIA_VERSION}")
+    find_package(aria ${_aria_sdk_version} EXACT REQUIRED CONFIG COMPONENTS ${_aria_components})
+  else()
+    find_package(aria 3.0 REQUIRED CONFIG COMPONENTS ${_aria_components})
+  endif()
   message(STATUS "Aria: 使用已安装的 3.x SDK")
 endif()
 
