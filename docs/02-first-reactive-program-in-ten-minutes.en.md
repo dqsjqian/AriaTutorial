@@ -13,7 +13,7 @@ The previous chapter explained what problem Aria exists to solve. This one actua
 
 | Item | Requirement |
 |---|---|
-| CMake | >= 3.20 |
+| CMake | >= 3.21 |
 | Compiler | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ |
 | C++ standard | C++23 baseline (required by the Aria framework) |
 | Other dependencies | None. This chapter's demo only needs `aria::core` |

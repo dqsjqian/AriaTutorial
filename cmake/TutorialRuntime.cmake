@@ -78,3 +78,42 @@ ${runtime_tool}include([==[${CMAKE_CURRENT_FUNCTION_LIST_DIR}/DeployTutorialRunt
     add_dependencies(${demo} aria_tutorial_runtime)
   endforeach()
 endfunction()
+
+# All platforms stage the project's own notices and the selected Aria source
+# or SDK's available license directory. This is not a complete Qt bundle.
+function(aria_tutorial_stage_licenses)
+  list(GET ARGN 0 first_demo)
+  set(json_source "")
+  set(mira_source "")
+  set(openssl_source "")
+  set(http_tls OFF)
+  if(ARIA_ROOT AND ARIA_TUTORIAL_HTTP)
+    get_directory_property(json_source DIRECTORY "${ARIA_ROOT}" DEFINITION _aria_json_license_source)
+    get_directory_property(mira_source DIRECTORY "${ARIA_ROOT}" DEFINITION _aria_mira_license_source)
+    get_directory_property(http_tls DIRECTORY "${ARIA_ROOT}" DEFINITION ARIA_HTTP_ENABLE_TLS)
+    get_directory_property(bundled_ssl DIRECTORY "${ARIA_ROOT}" DEFINITION ARIA_BUNDLED_OPENSSL)
+    if(http_tls AND bundled_ssl)
+      get_directory_property(openssl_source DIRECTORY "${ARIA_ROOT}" DEFINITION OPENSSL_SOURCE_DIR)
+    endif()
+  endif()
+  set(manifest "${CMAKE_CURRENT_BINARY_DIR}/licenses-$<CONFIG>.cmake")
+  file(GENERATE OUTPUT "${manifest}" CONTENT
+"set(license_output [==[$<TARGET_FILE_DIR:${first_demo}>/licenses]==])
+set(tutorial_source [==[${PROJECT_SOURCE_DIR}]==])
+set(aria_source [==[${ARIA_ROOT}]==])
+set(aria_sdk_licenses [==[${ARIA_LICENSE_DIR}]==])
+set(http_enabled [==[${ARIA_TUTORIAL_HTTP}]==])
+set(http_tls [==[${http_tls}]==])
+set(json_source [==[${json_source}]==])
+set(mira_source [==[${mira_source}]==])
+set(openssl_source [==[${openssl_source}]==])
+include([==[${CMAKE_CURRENT_FUNCTION_LIST_DIR}/StageTutorialLicenses.cmake]==])
+")
+  add_custom_target(aria_tutorial_licenses
+    COMMAND "${CMAKE_COMMAND}" -P "${manifest}"
+    COMMENT "Staging tutorial and selected Aria license materials"
+    VERBATIM)
+  foreach(demo IN LISTS ARGN)
+    add_dependencies(${demo} aria_tutorial_licenses)
+  endforeach()
+endfunction()

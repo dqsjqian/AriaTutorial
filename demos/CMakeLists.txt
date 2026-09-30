@@ -67,3 +67,4 @@ aria_add_demo(ch19_testing)
 aria_add_demo(ch20_ecosystem aria::binding)
 
 aria_tutorial_deploy_windows_runtime(${aria_tutorial_demo_targets})
+aria_tutorial_stage_licenses(${aria_tutorial_demo_targets})
