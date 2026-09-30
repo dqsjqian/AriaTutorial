@@ -19,9 +19,10 @@
 using namespace aria;
 using namespace aria::adapters::http;
 
-int main() {
+int main(int argc, char** argv) {
+    const bool smoke = argc > 1 && std::string{argv[1]} == "--smoke";
     HttpAdapterConfig config;
-    config.port           = 9090;   // 0 表示让系统分配一个空闲端口
+    config.port           = smoke ? 0 : 9090; // 自动测试使用空闲端口
     config.worker_threads = 4;
 
     auto http       = std::make_shared<HttpAdapter>(config);
@@ -47,6 +48,13 @@ int main() {
     std::cout << "在浏览器打开: http://127.0.0.1:" << http->actual_port() << "\n";
     std::cout << "\n";
     std::cout << "在下面输入新内容并回车, 页面会立刻更新 (走 SSE 推送):\n";
+
+    if (smoke) {
+        message = "smoke update";
+        dispatcher->pump();
+        http->stop();
+        return 0;
+    }
 
     std::string line;
     while (std::getline(std::cin, line)) {

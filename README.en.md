@@ -6,7 +6,7 @@
 
 Every chapter ships a demo you can compile and run. The code in the articles and the code in the repository are the same code.
 
-[![Aria](https://img.shields.io/badge/Aria-2.0-blue.svg)](https://github.com/dqsjqian/Aria)
+[![Aria](https://img.shields.io/badge/Aria-3.0-blue.svg)](https://github.com/dqsjqian/Aria)
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -116,9 +116,9 @@ All articles are available in Chinese and English.
 | Item | Requirement |
 |---|---|
 | CMake | >= 3.20 |
-| Compiler | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ |
+| Compiler | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ / AppleClang 21+ |
 | C++ standard | C++23 baseline (required by the Aria framework) |
-| Other dependencies | None. The demos need only `aria::core`, with no UI toolkit involved |
+| Other dependencies | Default chapters use Aria core, async, runtime and binding; no UI toolkit is required |
 
 > Chapter 15 covers the Qt6 and HTTP adapters. Its two demos are excluded from the default build and require `-DARIA_TUTORIAL_QT6=ON` / `-DARIA_TUTORIAL_HTTP=ON`. The chapter explains this in detail.
 
@@ -163,17 +163,11 @@ Each figure is an SVG under `images/`, so you can change the wording or the pale
 
 ## How articles and demos stay in sync
 
-The articles were not written first and illustrated afterwards. They were **derived from the runnable demos**. Three checks run automatically; none of them relies on a human eye:
+Article snippets follow the implementations under `demos/`. Changes to examples require checking the corresponding snippets, output and figures. Current CI builds and runs demos; it does not compare every article and SVG character for character.
 
-| Check | Rule |
-|---|---|
-| Code | Every ```cpp block in an article is **character-for-character identical** to `demos/chNN_xxx/main.cpp` |
-| Output | Every ```text block is a **verbatim copy of real stdout** from that demo |
-| Figures | Each article references exactly one figure; the file exists and the article references the SVG source itself |
+Run `ctest --test-dir build --output-on-failure` to check enabled demos, each with a 30-second timeout. Chapter 15 uses `--smoke`: Qt checks labels, buttons and state propagation; HTTP checks startup on a temporary port, state updates and shutdown. These do not replace full GUI or browser interaction tests.
 
-Every behavioural claim in the text can therefore be reproduced by running `build/bin/chNN_xxx` yourself.
-
-> Chapter 15's two demos need Qt6 and Aria's HTTP module and were not run here, so that chapter is checked for code provenance and figures, but not for runtime output. This is also stated in `ABOUT.en.md` under "What this tutorial does not cover".
+On 2026-09-30, all 21 demo tests passed against Aria `27fda0e03571` on macOS / AppleClang 21, including Qt6 and HTTP. Historical timings in the articles are not expected output on every machine.
 
 ## Related repositories
 

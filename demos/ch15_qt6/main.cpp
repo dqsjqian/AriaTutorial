@@ -33,11 +33,15 @@ struct TipViewModel {
     Property<double> bill{200.0};    // 账单总额
     Property<int>    people{2};      // 分摊人数
 
-    Computed<double> per_person{[&] { return bill.get() / people.get(); }};
+    Computed<double> per_person{[&] {
+        const int count = people.get();
+        return count > 0 ? bill.get() / count : 0.0;
+    }};
     Computed<bool>   can_settle{[&] { return people.get() > 0; }};   // 除零保护
 };
 
 int main(int argc, char** argv) {
+    const bool smoke = argc > 1 && std::string{argv[1]} == "--smoke";
     QApplication app(argc, argv);
 
     // ---- 上半: 界面。和写普通 Qt 程序完全一样 ----
@@ -73,6 +77,17 @@ int main(int argc, char** argv) {
     // ---- 之后只改数据, 界面自己跟着变 ----
     vm.people = 4;      // 标签 -> 每人付: ¥ 50.00
     vm.bill   = 90.0;   // 标签 -> 每人付: ¥ 22.50
+
+    if (smoke) {
+        if (!per_person->text().endsWith("22.50") || !settle->isEnabled()) return 1;
+        settle->click();
+        if (settles != 1) return 1;
+        vm.people = 0;
+        if (settle->isEnabled() || vm.per_person.get() != 0.0) return 1;
+        vm.people = 2;
+        if (!settle->isEnabled() || !per_person->text().endsWith("45.00")) return 1;
+        return 0;
+    }
 
     std::cout << "窗口已显示。当前每人应付 "
               << vm.per_person.get() << " 元。关掉窗口结束程序。\n";

@@ -37,18 +37,9 @@ images/        one SVG figure per chapter, per language
 
 ## Quality bar
 
-This repository enforces "authenticity" as a hard requirement, **checked automatically** rather than by eye:
+Current CI builds and runs the default chapters through CTest with per-demo timeouts. Article snippets, output and SVG figures still require maintenance alongside the demos; the repository has no automatic gate comparing all article content character for character.
 
-| Check | Rule |
-|---|---|
-| Code authenticity | Every ```cpp block in an article must be **character-for-character identical** to the corresponding `demos/<chapter>/main.cpp` |
-| Output authenticity | Every ```text block must match the demo's **real stdout character for character** |
-| Figure authenticity | Each article references exactly one figure; the file exists and the article references the SVG source itself |
-| Compiles | Every demo must compile (measured with MSVC on Windows; the code itself is cross-platform) |
-
-A single mismatch fails the check. In other words: **every behavioural claim you read can be reproduced by running `build/bin/chNN_xxx` yourself.**
-
-All output shown in the articles was genuinely printed on Windows / MSVC 19.51 — none of it is illustrative.
+Historical output in the articles comes from Windows / MSVC 19.51. Timings, addresses and scheduling order can vary by environment; verify behaviour rather than expecting identical characters. On 2026-09-30, all 21 demo tests, including Qt6 / HTTP, passed on macOS / AppleClang 21.
 
 ## What is explicitly not covered
 
@@ -56,7 +47,7 @@ Drawn honestly, to avoid misleading anyone:
 
 | Item | Note |
 |---|---|
-| **Chapter 15's Qt6 / HTTP demos** | They need Qt6 and the Aria HTTP module, are excluded from the default build, and their output was **not verified** here. Only code provenance is checked |
+| **Chapter 15's Qt6 / HTTP demos** | Excluded by default; when enabled, CTest runs bounded `--smoke` checks, not full GUI or browser interactions |
 | **AppKit / UIKit / JNI adapters** | These require building on their own platforms. The text gives wiring code and a comparison table, and **does not claim verification** |
 | Visual and interaction testing | Belongs to UI testing, out of scope here |
 | Every Aria API | This tutorial covers the mainline; numbered contract details live in Aria's `docs/` |

@@ -6,7 +6,7 @@
 
 每章一个独立可跑的 demo，正文代码与仓库代码同源，照着敲就能跑通。
 
-[![Aria](https://img.shields.io/badge/Aria-2.0-blue.svg)](https://github.com/dqsjqian/Aria)
+[![Aria](https://img.shields.io/badge/Aria-3.0-blue.svg)](https://github.com/dqsjqian/Aria)
 [![C++](https://img.shields.io/badge/C%2B%2B-20%20%7C%2023-lightgrey.svg)](#环境要求)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -111,9 +111,9 @@ cmake --build build -j
 | 项 | 要求 |
 |---|---|
 | CMake | >= 3.20 |
-| 编译器 | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ |
+| 编译器 | MSVC v143+ (VS 2022/2026) / GCC 14+ / Clang 19+ / AppleClang 21+ |
 | C++ 标准 | C++23 基线（随 Aria 框架要求） |
-| 其他依赖 | 无。demo 只依赖 `aria::core`，不涉及 UI 工具包 |
+| 其他依赖 | 默认章节使用 Aria 的 core、async、runtime 和 binding，不需要 UI 工具包 |
 
 > 第 15 章涉及 Qt6 与 HTTP 适配器，对应的两个 demo 默认不参与构建，需要 `-DARIA_TUTORIAL_QT6=ON` / `-DARIA_TUTORIAL_HTTP=ON` 才会启用。正文会单独说明。
 
@@ -158,17 +158,11 @@ AriaTutorial/
 
 ## 正文与 demo 的一致性
 
-教程正文不是"照着代码写出来的"——它是**从可运行的 demo 反向产出的**。三项检查全部自动化，不靠人眼：
+正文代码以 `demos/` 中的实现为依据。修改示例时，需要同步检查代码摘录、输出和配图；当前 CI 自动构建并运行 demo，不会逐字比对所有正文和 SVG 内容。
 
-| 检查项 | 规则 |
-|---|---|
-| 代码真实性 | 正文里每段 ```cpp 代码块，与 `demos/chNN_xxx/main.cpp` **逐字一致** |
-| 输出真实性 | 正文里每段 ```text 输出块，是该 demo **真实 stdout 的逐字拷贝** |
-| 配图真实性 | 每篇恰好一张配图，文件存在，正文引用的就是 SVG 源文件本身 |
+运行 `ctest --test-dir build --output-on-failure` 验证已启用的示例，每个测试限时 30 秒。第 15 章启用后使用 `--smoke`：Qt 检查标签、按钮和状态更新，HTTP 检查临时端口启动、状态更新与停止。它们不替代完整的 GUI 或浏览器交互测试。
 
-所以你在正文里看到的每一条行为描述，都可以靠 `build/bin/chNN_xxx` 亲手复现。
-
-> 第 15 章的两个 demo 需要 Qt6 与 Aria HTTP 模块，本机未运行，因此该章只校验代码来源与配图，不校验运行输出 —— 这一点也写在 `ABOUT.md` 的「明确不覆盖的部分」里。
+2026-09-30 已使用 Aria `27fda0e03571` 在 macOS / AppleClang 21 下通过全部 21 个示例测试（含 Qt6 与 HTTP）。正文保留的历史耗时不代表每台机器的预期输出。
 
 ## 相关仓库
 

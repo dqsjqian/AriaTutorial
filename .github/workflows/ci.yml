@@ -21,18 +21,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ninja-build \
-            ${{ matrix.compiler == 'gcc' && 'g++' || 'clang' }}
+            ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang-19' }}
 
       - name: Checkout Aria
         uses: actions/checkout@v7
         with:
           repository: dqsjqian/Aria
           path: deps/aria
+          ref: 362f5511244b0184d511a4ea43a77cecf3114686
 
       - name: Configure
         env:
-          CC: ${{ matrix.compiler }}
-          CXX: ${{ matrix.compiler == 'gcc' && 'g++' || 'clang++' }}
+          CC: ${{ matrix.compiler == 'gcc' && 'gcc-14' || 'clang-19' }}
+          CXX: ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang++-19' }}
         run: >
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
           -DARIA_ROOT=${{ github.workspace }}/deps/aria
@@ -41,20 +42,30 @@ jobs:
         run: cmake --build build -j
 
       - name: Run all demos
+        run: ctest --test-dir build --output-on-failure --no-tests=error --timeout 30
+
+  windows-sdk:
+    name: Installed shared SDK (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Checkout pinned Aria
+        uses: actions/checkout@v7
+        with:
+          repository: dqsjqian/Aria
+          path: deps/aria
+          ref: 362f5511244b0184d511a4ea43a77cecf3114686
+      - name: Build and install shared SDK
         run: |
-          set -e
-          PASSED=0; FAILED=0
-          for exe in build/bin/ch*; do
-            [ -x "$exe" ] || continue
-            name=$(basename "$exe")
-            if timeout 30 "$exe" > "/tmp/$name.log" 2>&1; then
-              PASSED=$((PASSED+1))
-            else
-              code=$?
-              FAILED=$((FAILED+1))
-              echo "::error::demo $name exited $code"
-              tail -5 "/tmp/$name.log" || true
-            fi
-          done
-          echo "Demos passed: $PASSED, failed: $FAILED"
-          [ "$FAILED" -eq 0 ]
+          cmake -S deps/aria -B build/sdk-build -DARIA_BUILD_TESTS=OFF -DARIA_BUILD_BENCHMARK=OFF -DARIA_BUILD_SHARED=ON "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/sdk"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cmake --build build/sdk-build --config Release --parallel 3
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cmake --install build/sdk-build --config Release
+      - name: Build installed-SDK demos
+        run: |
+          cmake -S . -B build/installed-sdk -DARIA_ROOT= -DBUILD_TESTING=ON "-DCMAKE_PREFIX_PATH=${{ github.workspace }}/build/sdk"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cmake --build build/installed-sdk --config Release --parallel 3
+      - name: Run with deployed runtime DLLs
+        run: ctest --test-dir build/installed-sdk -C Release --output-on-failure --no-tests=error --timeout 30

@@ -45,12 +45,12 @@ cmake --install Aria/build/release
 After installing, your own project needs just one line:
 
 ```cmake
-find_package(aria 2.0 CONFIG REQUIRED)
+find_package(aria 3.0 CONFIG REQUIRED COMPONENTS core)
 add_executable(my_app main.cpp)
 target_link_libraries(my_app PRIVATE aria::core)
 ```
 
-The only difference between the two routes is how Aria is found: option A pulls the source tree in via `add_subdirectory`, option B links an installed library. This repository's `CMakeLists.txt` supports both — it tries `find_package` first and falls back to the source tree you pass via `-DARIA_ROOT=`.
+The only difference between the two routes is how Aria is found: option A pulls the source tree in via `add_subdirectory`, option B links an installed library. This repository's `CMakeLists.txt` supports both — an explicit `-DARIA_ROOT=` selects that source tree; otherwise it looks for an installed Aria 3.x SDK.
 
 ---
 
