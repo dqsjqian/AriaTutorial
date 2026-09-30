@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(aria_tutorial VERSION 0.1.1 LANGUAGES CXX)
+project(aria_tutorial VERSION 0.1.2 LANGUAGES CXX)
 
 set(ARIA_DEPENDENCIES_FILE "${CMAKE_CURRENT_SOURCE_DIR}/dependencies.json" CACHE FILEPATH
     "Shared dependency requests and resolved versions")

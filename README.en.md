@@ -8,8 +8,8 @@
 
 Every chapter ships a demo you can compile and run. The code in the articles and the code in the repository are the same code.
 
-[![Release](https://img.shields.io/badge/release-0.1.1-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.1.1)
-[![Aria](https://img.shields.io/badge/Aria-3.1.0-blue.svg)](https://github.com/dqsjqian/Aria)
+[![Release](https://img.shields.io/badge/release-0.1.2-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.1.2)
+[![Aria](https://img.shields.io/badge/Aria-3.1.1-blue.svg)](https://github.com/dqsjqian/Aria)
 [![C++](https://img.shields.io/badge/C%2B%2B-23-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -66,13 +66,13 @@ cmake --build build -j
 
 For the source route, you can also run `python tools/ci/fetch_aria.py` and pass `-DARIA_ROOT=build/deps/aria`. Explicit `ARIA_ROOT` uses the selected source tree directly; embedded Aria shares this tutorial's root dependency requests and lock.
 
-The single root `dependencies.json` contains version requests and each dependency’s `resolved` result. Without an explicit version or a matching lock, the first resolution selects the latest stable release and records its version, commit, and SHA256. Existing locks are reused, so ordinary builds do not follow new releases. Explicit versions take priority: for example, `python tools/ci/fetch_aria.py --version 3.1.0` overrides `ARIA_DEP_ARIA_VERSION`. Run `python tools/ci/fetch_aria.py --update` to upgrade Aria deliberately.
+The single root `dependencies.json` contains version requests and each dependency’s `resolved` result. Without an explicit version or a matching lock, the first resolution selects the latest stable release and records its version, commit, and SHA256. Existing locks are reused, so ordinary builds do not follow new releases. Explicit versions take priority: for example, `python tools/ci/fetch_aria.py --version 3.1.1` overrides `ARIA_DEP_ARIA_VERSION`. Run `python tools/ci/fetch_aria.py --update` to upgrade Aria deliberately.
 
 Override C++ libraries with options such as `-DARIA_DEP_JSON_VERSION=3.12.0`, `-DARIA_DEP_MIRA_VERSION=1.0.0`, and `-DARIA_DEP_OPENSSL_VERSION=4.0.3`. CMake records temporary overrides in a build-directory resolution cache without changing the source `dependencies.json`. To update the shared library lock, run `python tools/ci/update_dependencies.py`, review the changes, and commit this dependency file. Explicit source overrides and dependency targets supplied by a parent project retain priority.
 
 Qt uses installed SDKs and never downloads or installs them automatically. The default prefers the latest discoverable version; `-DARIA_DEP_QT_VERSION=6.8.3` requires that exact version. Use `Qt6_DIR` / `CMAKE_PREFIX_PATH` to select an SDK location.
 
-The installed SDK route does not fetch or rebuild the SDK's third-party libraries. By default it finds the latest discoverable compatible Aria 3.x SDK. Use `-DARIA_DEP_ARIA_VERSION=3.1.0` for an exact SDK version, and `aria_DIR` / `CMAKE_PREFIX_PATH` for its location. Explicit source selection takes precedence over SDK discovery.
+The installed SDK route does not fetch or rebuild the SDK's third-party libraries. By default it finds the latest discoverable compatible Aria 3.x SDK. Use `-DARIA_DEP_ARIA_VERSION=3.1.1` for an exact SDK version, and `aria_DIR` / `CMAKE_PREFIX_PATH` for its location. Explicit source selection takes precedence over SDK discovery.
 
 Or use the convenience script:
 

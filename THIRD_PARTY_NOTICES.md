@@ -11,7 +11,7 @@ See the [dependency guide](docs/dependencies.md) and
 
 | Component | Current source resolution | License | Use |
 |---|---|---|---|
-| [Aria](https://github.com/dqsjqian/Aria) | 3.1.0 | MIT | Framework used by the demos. |
+| [Aria](https://github.com/dqsjqian/Aria) | 3.1.1 | MIT | Framework used by the demos. |
 | [Mira](https://github.com/dqsjqian/Mira) | 1.0.0 | MIT | Optional HTTP chapter through Aria. |
 | [nlohmann/json](https://github.com/nlohmann/json) | 3.12.0 | MIT | Optional HTTP adapter's compiled JSON implementation. |
 | [OpenSSL](https://github.com/openssl/openssl) | 4.0.3 | Apache-2.0 | Optional HTTP/TLS configuration; bundled source builds use static libraries. |
@@ -21,7 +21,7 @@ See the [dependency guide](docs/dependencies.md) and
 The default tutorial build leaves the Qt and HTTP chapters disabled. A shared
 resolution entry alone does not mean its library is present in every demo.
 
-Aria's [LICENSE](https://github.com/dqsjqian/Aria/blob/7f957a8764e69d02e8487a2d128ace9f0605ccdd/LICENSE)
+Aria's [LICENSE](https://github.com/dqsjqian/Aria/blob/a56ad396433f5278fba81d920ddd86d1fe5aa923/LICENSE)
 and third-party notices apply to the selected framework. Mira's
 [LICENSE](https://github.com/dqsjqian/Mira/blob/9386d89d2a259303a0a2c3b1539a5cb0e3fc0be5/LICENSE)
 credits Copyright (c) 2026 dqsjqian. nlohmann/json's
