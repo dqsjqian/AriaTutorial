@@ -8,7 +8,7 @@
 
 Every chapter ships a demo you can compile and run. The code in the articles and the code in the repository are the same code.
 
-[![Release](https://img.shields.io/badge/release-0.1.2-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.1.2)
+[![Release](https://img.shields.io/badge/release-0.2.0-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.2.0)
 [![Aria](https://img.shields.io/badge/Aria-3.1.1-blue.svg)](https://github.com/dqsjqian/Aria)
 [![C++](https://img.shields.io/badge/C%2B%2B-23-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -57,6 +57,18 @@ configures, builds and runs CTest. Use `--aria-root` for a local source,
 `--platform qt|web` enables the corresponding adapter chapter. Direct CMake
 and installed-SDK workflows remain supported.
 
+For an installed SDK, run `python tools/build.py --aria-prefix /path/to/aria-sdk --test`.
+It requires the exact Aria version locked in `dependencies.json` within that
+prefix and does not fetch sources. A wrong version or prefix fails explicitly.
+`--aria-prefix` and `--aria-root` are mutually exclusive; SDK builds have a
+separate default directory. Add `--qt-prefix` to select Qt independently.
+
+On macOS, `--arch x86_64` / `--arch arm64` selects the actual target architecture.
+Visual Studio accepts `--generator-platform x64` (or `ARM64`). Extra definitions
+use `--cmake-arg=-DNAME[:TYPE]=VALUE` and cannot override the selected configuration,
+source or platform. Existing compiler, toolchain, architecture and source/SDK
+path cache conflicts are rejected before fetching; existing files are preserved.
+
 ```bash
 git clone https://github.com/dqsjqian/AriaTutorial.git
 cd AriaTutorial
@@ -78,7 +90,7 @@ Override C++ libraries with options such as `-DARIA_DEP_JSON_VERSION=3.12.0`, `-
 
 Qt uses installed SDKs and never downloads or installs them automatically. The default prefers the latest discoverable version; `-DARIA_DEP_QT_VERSION=6.8.3` requires that exact version. Use `Qt6_DIR` / `CMAKE_PREFIX_PATH` to select an SDK location.
 
-The installed SDK route does not fetch or rebuild the SDK's third-party libraries. By default it finds the latest discoverable compatible Aria 3.x SDK. Use `-DARIA_DEP_ARIA_VERSION=3.1.1` for an exact SDK version, and `aria_DIR` / `CMAKE_PREFIX_PATH` for its location. Explicit source selection takes precedence over SDK discovery.
+The installed SDK route does not fetch or rebuild the SDK's third-party libraries. `tools/build.py --aria-prefix` requires the locked version; direct CMake discovery without an explicit version selects the latest discoverable compatible Aria 3.x SDK. Use `-DARIA_DEP_ARIA_VERSION=3.1.1` for an exact SDK version, and `aria_DIR` / `CMAKE_PREFIX_PATH` for its location. Explicit source selection takes precedence over SDK discovery.
 
 Or use the convenience script:
 

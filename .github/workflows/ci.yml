@@ -59,10 +59,5 @@ jobs:
           cmake --build build/sdk-build --config Release --parallel 3
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cmake --install build/sdk-build --config Release
-      - name: Build installed-SDK demos
-        run: |
-          cmake -S . -B build/installed-sdk -DARIA_ROOT= -DBUILD_TESTING=ON "-DCMAKE_PREFIX_PATH=${{ github.workspace }}/build/sdk"
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          cmake --build build/installed-sdk --config Release --parallel 3
-      - name: Run with deployed runtime DLLs
-        run: ctest --test-dir build/installed-sdk -C Release --output-on-failure --no-tests=error --timeout 30
+      - name: Build installed-SDK demos and run with deployed runtime DLLs
+        run: python tools/build.py --aria-prefix "${{ github.workspace }}/build/sdk" --build-dir build/installed-sdk --test --jobs 3

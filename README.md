@@ -8,7 +8,7 @@
 
 每章一个独立可跑的 demo，正文代码与仓库代码同源，照着敲就能跑通。
 
-[![Release](https://img.shields.io/badge/release-0.1.2-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.1.2)
+[![Release](https://img.shields.io/badge/release-0.2.0-blue.svg)](https://github.com/dqsjqian/AriaTutorial/releases/tag/v0.2.0)
 [![Aria](https://img.shields.io/badge/Aria-3.1.1-blue.svg)](https://github.com/dqsjqian/Aria)
 [![C++](https://img.shields.io/badge/C%2B%2B-23-lightgrey.svg)](#环境要求)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -51,6 +51,10 @@ cmake --install Aria/build/release
 
 推荐入口：`python tools/build.py --test`，自动复用锁定 Aria 源码、配置、编译并执行 CTest。`--aria-root` 指定本地源码，`--offline` 使用缓存，`--dry-run` 只看计划；可选 `--platform qt|web` 启用对应适配器章节。原始 CMake 和已安装 SDK 用法仍然有效。
 
+已安装 SDK 可直接使用 `python tools/build.py --aria-prefix /path/to/aria-sdk --test`：只在所选前缀中寻找 `dependencies.json` 锁定的精确 Aria 版本，不拉取源码；版本或前缀不匹配会明确失败。`--aria-prefix` 与 `--aria-root` 互斥，SDK 构建有独立默认目录，可同时用 `--qt-prefix` 指定 Qt。
+
+macOS 的 `--arch x86_64` / `--arch arm64` 选择实际目标架构；Visual Studio 使用 `--generator-platform x64`（或 `ARM64`）。`--cmake-arg=-DNAME[:TYPE]=VALUE` 只补充定义，不允许覆盖已选配置、源码或平台。入口会在下载前检查已有缓存的编译器、工具链、架构和源码/SDK 路径，冲突时保留原文件并要求另选构建目录。
+
 ```bash
 git clone https://github.com/dqsjqian/AriaTutorial.git
 cd AriaTutorial
@@ -72,7 +76,7 @@ C++ 库可用 `-DARIA_DEP_JSON_VERSION=3.12.0`、`-DARIA_DEP_MIRA_VERSION=1.0.0`
 
 Qt 使用已安装的 SDK，不自动下载安装。未指定版本时优先选择可发现的最新版本；`-DARIA_DEP_QT_VERSION=6.8.3` 要求精确版本，`Qt6_DIR` / `CMAKE_PREFIX_PATH` 可指定 SDK 所在位置。
 
-安装 SDK 方式不重新获取或重建 SDK 的第三方库，默认查找可发现的最新兼容 Aria 3.x SDK。可用 `-DARIA_DEP_ARIA_VERSION=3.1.1` 要求精确 SDK 版本，并用 `aria_DIR` / `CMAKE_PREFIX_PATH` 指定位置。源码方式优先于 SDK 查找。
+安装 SDK 方式不重新获取或重建 SDK 的第三方库。`tools/build.py --aria-prefix` 严格使用依赖锁中的版本；直接调用 CMake 且未固定版本时，才查找可发现的最新兼容 Aria 3.x SDK。可用 `-DARIA_DEP_ARIA_VERSION=3.1.1` 要求精确 SDK 版本，并用 `aria_DIR` / `CMAKE_PREFIX_PATH` 指定位置。源码方式优先于 SDK 查找。
 
 也可以直接用一键脚本：
 

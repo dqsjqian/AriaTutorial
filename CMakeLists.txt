@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.21)
-project(aria_tutorial VERSION 0.1.2 LANGUAGES CXX)
+project(aria_tutorial VERSION 0.2.0 LANGUAGES CXX)
 
 set(ARIA_DEPENDENCIES_FILE "${CMAKE_CURRENT_SOURCE_DIR}/dependencies.json" CACHE FILEPATH
     "Shared dependency requests and resolved versions")
 set(ARIA_DEP_ARIA_VERSION "$ENV{ARIA_DEP_ARIA_VERSION}" CACHE STRING
     "Exact installed Aria SDK version (explicit ARIA_ROOT still takes precedence)")
+set(ARIA_SDK_PREFIX "" CACHE PATH "Restrict installed Aria SDK lookup to this prefix")
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -52,11 +53,18 @@ else()
   # compatible SDK in the configured package search paths.
   set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
   set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
+  set(_aria_sdk_search)
+  if(ARIA_SDK_PREFIX)
+    # A prior aria_DIR or system SDK must not defeat an explicit SDK selection.
+    unset(aria_DIR CACHE)
+    unset(aria_DIR)
+    list(APPEND _aria_sdk_search PATHS "${ARIA_SDK_PREFIX}" NO_DEFAULT_PATH)
+  endif()
   if(ARIA_DEP_ARIA_VERSION)
     string(REGEX REPLACE "^v" "" _aria_sdk_version "${ARIA_DEP_ARIA_VERSION}")
-    find_package(aria ${_aria_sdk_version} EXACT REQUIRED CONFIG COMPONENTS ${_aria_components})
+    find_package(aria ${_aria_sdk_version} EXACT REQUIRED CONFIG COMPONENTS ${_aria_components} ${_aria_sdk_search})
   else()
-    find_package(aria 3.0 REQUIRED CONFIG COMPONENTS ${_aria_components})
+    find_package(aria 3.0 REQUIRED CONFIG COMPONENTS ${_aria_components} ${_aria_sdk_search})
   endif()
   message(STATUS "Aria: 使用已安装的 3.x SDK")
 endif()
