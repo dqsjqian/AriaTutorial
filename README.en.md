@@ -57,6 +57,11 @@ configures, builds and runs CTest. Use `--aria-root` for a local source,
 `--platform qt|web` enables the corresponding adapter chapter. Direct CMake
 and installed-SDK workflows remain supported.
 
+Run `python tools/build.py --all-demos --test` to build and test all 21 demos,
+including both Qt6 and HTTP; install Qt6 first. The default builds 19 non-UI
+demos. `--all-demos` uses a separate default build directory. With `--aria-prefix`,
+the selected SDK must provide both Qt6 and HTTP components; missing components fail explicitly.
+
 For an installed SDK, run `python tools/build.py --aria-prefix /path/to/aria-sdk --test`.
 It requires the exact Aria version locked in `dependencies.json` within that
 prefix and does not fetch sources. A wrong version or prefix fails explicitly.
@@ -167,7 +172,7 @@ AriaTutorial/
 │   ├── common/                 # shared helpers (tutorial in-memory adapter)
 │   ├── ch01_bill/main.cpp
 │   ├── ch02_hello/main.cpp
-│   ├── ...                     # ch03 - ch20, 20 executable targets in total
+│   ├── ...                     # ch03 - ch20, 19 default targets, 21 with optional Qt6/HTTP demos
 │   ├── ch15_qt6/main.cpp       # needs Qt6
 │   ├── ch15_http/main.cpp      # needs Aria's HTTP module
 │   └── ch20_ecosystem/main.cpp

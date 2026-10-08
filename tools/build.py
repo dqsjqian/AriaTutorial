@@ -59,6 +59,8 @@ def arguments(argv=None):
     parser.add_argument("--arch", help="Android ABI or Apple architecture")
     parser.add_argument("--ios-sdk", choices=("iphonesimulator", "iphoneos"), default="iphonesimulator")
     parser.add_argument("--test", action="store_true", help="Run native-host CTest; mobile needs a separate device runner")
+    parser.add_argument("--all-demos", action="store_true",
+                        help="Tutorial: include both Qt6 and HTTP chapters; requires Qt6 and matching SDK components")
     parser.add_argument("--configure-only", action="store_true")
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -108,6 +110,8 @@ def plan(args, root=ROOT, host=None):
     host = host or platform.system()
     kind = project(root)
     target = args.platform
+    if args.all_demos and kind != "tutorial":
+        raise ValueError("--all-demos applies only to AriaTutorial")
     extra_definitions(args.cmake_arg, [])
     supported = {"aria": {"native", "qt", "web", "ios", "android"},
                  "tools": {"native", "qt", "web", "ios", "android"},
@@ -138,6 +142,8 @@ def plan(args, root=ROOT, host=None):
     suffix = f"{target}-{toolchain}-{args.config.lower()}-{arch}"
     if target == "ios":
         suffix += "-" + args.ios_sdk
+    if args.all_demos:
+        suffix += "-all-demos"
     if args.aria_prefix:
         suffix += "-sdk"
     if generator_platform:
@@ -179,10 +185,10 @@ def plan(args, root=ROOT, host=None):
         else:
             flags += [f"-DARIA_ROOT={aria}", "-DARIA_SDK_PREFIX="]
         flags += [f"-DBUILD_TESTING={'ON' if args.test else 'OFF'}",
-                  f"-DARIA_TUTORIAL_QT6={'ON' if target == 'qt' else 'OFF'}",
-                  f"-DARIA_TUTORIAL_HTTP={'ON' if target == 'web' else 'OFF'}"]
+                  f"-DARIA_TUTORIAL_QT6={'ON' if args.all_demos or target == 'qt' else 'OFF'}",
+                  f"-DARIA_TUTORIAL_HTTP={'ON' if args.all_demos or target == 'web' else 'OFF'}"]
     qt_prefix = args.qt_prefix
-    needs_qt = target == "qt" or (target == "native" and kind in {"tools", "agent"})
+    needs_qt = args.all_demos or target == "qt" or (target == "native" and kind in {"tools", "agent"})
     if not qt_prefix and needs_qt and host == "Darwin" and not args.dry_run and shutil.which("brew"):
         found = subprocess.run(["brew", "--prefix", "qt"], capture_output=True, text=True,
                                encoding="utf-8", check=False)

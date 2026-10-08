@@ -2,6 +2,9 @@
 
 ## 0.2.0
 
+- Add `--all-demos` to build and test all 21 examples, including Qt6 and HTTP,
+  through one entry point. Exercise both optional chapters in Linux CI.
+
 - Add one configure/build/test entry point with explicit platform selection.
 - Validate typed CMake definitions, configuration, compilers, source/SDK locations
   and cached build identity before fetching or configuring.

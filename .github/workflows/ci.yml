@@ -20,7 +20,7 @@ jobs:
       - name: Install toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y ninja-build \
+          sudo apt-get install -y ninja-build qt6-base-dev \
             ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang-19' }}
 
       - name: Verify dependency selection and fetch safety
@@ -34,14 +34,17 @@ jobs:
           CC: ${{ matrix.compiler == 'gcc' && 'gcc-14' || 'clang-19' }}
           CXX: ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang++-19' }}
         run: >
-          python3 tools/build.py --configure-only --build-dir build --generator Ninja --test
+          python3 tools/build.py --configure-only --build-dir build --generator Ninja --test --all-demos
           --aria-root=${{ github.workspace }}/build/deps/aria
 
       - name: Build
         run: cmake --build build -j
 
       - name: Run all demos
-        run: ctest --test-dir build --output-on-failure --no-tests=error --timeout 30
+        run: |
+          ctest --test-dir build --show-only=json-v1 > build/demo-tests.json
+          python3 -c "import json; names = {t['name'] for t in json.load(open('build/demo-tests.json'))['tests']}; assert {'ch15_qt6', 'ch15_http'} <= names, names"
+          ctest --test-dir build --output-on-failure --no-tests=error --timeout 30
 
   windows-sdk:
     name: Installed shared SDK (Windows)

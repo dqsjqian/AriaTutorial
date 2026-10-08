@@ -56,6 +56,29 @@ class BuildEntryTests(unittest.TestCase):
         self.assertEqual(commands[0][0], "cmake")
         self.assertIn(f"-DARIA_ROOT={(self.root / 'local').resolve()}", commands[0])
 
+    def test_all_demos_enables_both_adapters_and_uses_a_separate_default_tree(self):
+        self.layout("tutorial")
+        basic = self.plan("--test")[1]
+        all_demos = self.plan("--all-demos", "--test", "--qt-prefix", str(self.root / "Qt SDK"))[1]
+        for flag in ("-DARIA_TUTORIAL_QT6=ON", "-DARIA_TUTORIAL_HTTP=ON", "-DBUILD_TESTING=ON"):
+            self.assertIn(flag, all_demos)
+        self.assertIn(f"-DCMAKE_PREFIX_PATH={(self.root / 'Qt SDK').resolve()}", all_demos)
+        self.assertNotEqual(basic[basic.index("-B") + 1], all_demos[all_demos.index("-B") + 1])
+        with self.assertRaisesRegex(ValueError, "conflicts"):
+            self.plan("--all-demos", "--cmake-arg=-DARIA_TUTORIAL_HTTP=OFF")
+
+    def test_all_demos_sdk_keeps_locked_version_without_source_fetch(self):
+        self.layout("tutorial")
+        (self.root / "dependencies.json").write_text((ROOT / "dependencies.json").read_text(), encoding="utf-8")
+        commands = self.plan("--all-demos", "--aria-prefix", str(self.root / "sdk"), "--test")
+        self.assertEqual([row[0] for row in commands], ["cmake", "cmake", "ctest"])
+        self.assertIn("-DARIA_TUTORIAL_QT6=ON", commands[0])
+        self.assertIn("-DARIA_TUTORIAL_HTTP=ON", commands[0])
+        self.assertIn("-DARIA_ROOT=", commands[0])
+        (self.root / "core/agent").mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, "only to AriaTutorial"):
+            self.plan("--all-demos")
+
     def test_agent_rejects_unimplemented_mobile_shell(self):
         self.layout("agent")
         with self.assertRaisesRegex(ValueError, "not implemented"):
