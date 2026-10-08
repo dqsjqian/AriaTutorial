@@ -49,6 +49,8 @@ cmake --install Aria/build/release
 
 ### 2. 构建全部 demo
 
+推荐入口：`python tools/build.py --test`，自动复用锁定 Aria 源码、配置、编译并执行 CTest。`--aria-root` 指定本地源码，`--offline` 使用缓存，`--dry-run` 只看计划；可选 `--platform qt|web` 启用对应适配器章节。原始 CMake 和已安装 SDK 用法仍然有效。
+
 ```bash
 git clone https://github.com/dqsjqian/AriaTutorial.git
 cd AriaTutorial

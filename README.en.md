@@ -51,6 +51,12 @@ cmake --install Aria/build/release
 
 ### 2. Build the demos
 
+Recommended: `python tools/build.py --test` reuses the locked Aria source,
+configures, builds and runs CTest. Use `--aria-root` for a local source,
+`--offline` for cached dependencies and `--dry-run` to inspect the plan.
+`--platform qt|web` enables the corresponding adapter chapter. Direct CMake
+and installed-SDK workflows remain supported.
+
 ```bash
 git clone https://github.com/dqsjqian/AriaTutorial.git
 cd AriaTutorial
