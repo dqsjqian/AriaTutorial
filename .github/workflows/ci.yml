@@ -34,7 +34,7 @@ jobs:
           CC: ${{ matrix.compiler == 'gcc' && 'gcc-14' || 'clang-19' }}
           CXX: ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang++-19' }}
         run: >
-          python3 tools/build.py --configure-only --build-dir build --generator Ninja --test --all-demos
+          python3 scripts/build.py --configure-only --build-dir build --generator Ninja --test --all-demos
           --aria-root=${{ github.workspace }}/build/deps/aria
 
       - name: Build
@@ -63,4 +63,4 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cmake --install build/sdk-build --config Release
       - name: Build installed-SDK demos and run with deployed runtime DLLs
-        run: python tools/build.py --aria-prefix "${{ github.workspace }}/build/sdk" --build-dir build/installed-sdk --test --jobs 3
+        run: python scripts/build.py --aria-prefix "${{ github.workspace }}/build/sdk" --build-dir build/installed-sdk --test --jobs 3
