@@ -51,18 +51,18 @@ cmake --install Aria/build/release
 
 ### 2. Build the demos
 
-Recommended: `python tools/build.py --test` reuses the locked Aria source,
+Recommended: `python scripts/build.py --test` reuses the locked Aria source,
 configures, builds and runs CTest. Use `--aria-root` for a local source,
 `--offline` for cached dependencies and `--dry-run` to inspect the plan.
 `--platform qt|web` enables the corresponding adapter chapter. Direct CMake
 and installed-SDK workflows remain supported.
 
-Run `python tools/build.py --all-demos --test` to build and test all 21 demos,
+Run `python scripts/build.py --all-demos --test` to build and test all 21 demos,
 including both Qt6 and HTTP; install Qt6 first. The default builds 19 non-UI
 demos. `--all-demos` uses a separate default build directory. With `--aria-prefix`,
 the selected SDK must provide both Qt6 and HTTP components; missing components fail explicitly.
 
-For an installed SDK, run `python tools/build.py --aria-prefix /path/to/aria-sdk --test`.
+For an installed SDK, run `python scripts/build.py --aria-prefix /path/to/aria-sdk --test`.
 It requires the exact Aria version locked in `dependencies.json` within that
 prefix and does not fetch sources. A wrong version or prefix fails explicitly.
 `--aria-prefix` and `--aria-root` are mutually exclusive; SDK builds have a

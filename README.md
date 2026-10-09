@@ -49,11 +49,11 @@ cmake --install Aria/build/release
 
 ### 2. 构建全部 demo
 
-推荐入口：`python tools/build.py --test`，自动复用锁定 Aria 源码、配置、编译并执行 CTest。`--aria-root` 指定本地源码，`--offline` 使用缓存，`--dry-run` 只看计划；可选 `--platform qt|web` 启用对应适配器章节。原始 CMake 和已安装 SDK 用法仍然有效。
+推荐入口：`python scripts/build.py --test`，自动复用锁定 Aria 源码、配置、编译并执行 CTest。`--aria-root` 指定本地源码，`--offline` 使用缓存，`--dry-run` 只看计划；可选 `--platform qt|web` 启用对应适配器章节。原始 CMake 和已安装 SDK 用法仍然有效。
 
-要同时构建并测试全部 21 个示例（包括 Qt6 和 HTTP），运行 `python tools/build.py --all-demos --test`；需先安装 Qt6。默认仅构建 19 个无 UI 示例。`--all-demos` 使用独立默认构建目录；与 `--aria-prefix` 同用时，所选 SDK 必须包含 Qt6 和 HTTP 模块，缺失会明确失败。
+要同时构建并测试全部 21 个示例（包括 Qt6 和 HTTP），运行 `python scripts/build.py --all-demos --test`；需先安装 Qt6。默认仅构建 19 个无 UI 示例。`--all-demos` 使用独立默认构建目录；与 `--aria-prefix` 同用时，所选 SDK 必须包含 Qt6 和 HTTP 模块，缺失会明确失败。
 
-已安装 SDK 可直接使用 `python tools/build.py --aria-prefix /path/to/aria-sdk --test`：只在所选前缀中寻找 `dependencies.json` 锁定的精确 Aria 版本，不拉取源码；版本或前缀不匹配会明确失败。`--aria-prefix` 与 `--aria-root` 互斥，SDK 构建有独立默认目录，可同时用 `--qt-prefix` 指定 Qt。
+已安装 SDK 可直接使用 `python scripts/build.py --aria-prefix /path/to/aria-sdk --test`：只在所选前缀中寻找 `dependencies.json` 锁定的精确 Aria 版本，不拉取源码；版本或前缀不匹配会明确失败。`--aria-prefix` 与 `--aria-root` 互斥，SDK 构建有独立默认目录，可同时用 `--qt-prefix` 指定 Qt。
 
 macOS 的 `--arch x86_64` / `--arch arm64` 选择实际目标架构；Visual Studio 使用 `--generator-platform x64`（或 `ARM64`）。`--cmake-arg=-DNAME[:TYPE]=VALUE` 只补充定义，不允许覆盖已选配置、源码或平台。入口会在下载前检查已有缓存的编译器、工具链、架构和源码/SDK 路径，冲突时保留原文件并要求另选构建目录。
 
