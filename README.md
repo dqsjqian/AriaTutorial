@@ -72,15 +72,15 @@ cmake --build build/sdk -j
 
 两条路线使用不同构建目录；否则 CMake 缓存中的 `ARIA_ROOT` 会让后一次配置继续使用源码。原始 CMake 要启用全部 21 个示例，还需同时传入 `-DARIA_TUTORIAL_QT6=ON -DARIA_TUTORIAL_HTTP=ON` 并满足对应组件要求。
 
-源码方式也可先运行 `python tools/ci/fetch_aria.py`，再传入 `-DARIA_ROOT=build/deps/aria`。显式 `ARIA_ROOT` 直接使用所选源码树；嵌入 Aria 时共享本教程根目录的依赖请求与锁。
+源码方式也可先运行 `python scripts/ci/fetch_aria.py`，再传入 `-DARIA_ROOT=build/deps/aria`。显式 `ARIA_ROOT` 直接使用所选源码树；嵌入 Aria 时共享本教程根目录的依赖请求与锁。
 
-根目录唯一的 `dependencies.json` 同时保存版本请求与每项的 `resolved` 结果。没有显式版本、也没有匹配锁时，首次解析最新稳定版并记录版本、提交和 SHA256；已有锁会直接复用，普通构建不会追随新发布。显式版本优先，例如 `python tools/ci/fetch_aria.py --version 3.1.1`（优先于 `ARIA_DEP_ARIA_VERSION`）；主动升级 Aria 使用 `python tools/ci/fetch_aria.py --update`。
+根目录唯一的 `dependencies.json` 同时保存版本请求与每项的 `resolved` 结果。没有显式版本、也没有匹配锁时，首次解析最新稳定版并记录版本、提交和 SHA256；已有锁会直接复用，普通构建不会追随新发布。显式版本优先，例如 `python scripts/ci/fetch_aria.py --version 3.1.1`（优先于 `ARIA_DEP_ARIA_VERSION`）；主动升级 Aria 使用 `python scripts/ci/fetch_aria.py --update`。
 
-C++ 库可用 `-DARIA_DEP_JSON_VERSION=3.12.0`、`-DARIA_DEP_MIRA_VERSION=1.0.0`、`-DARIA_DEP_OPENSSL_VERSION=4.0.3` 等覆盖；CMake 将临时覆盖写入构建目录的解析缓存，不修改源码中的 `dependencies.json`。要更新并保存共享锁，运行 `python tools/ci/update_dependencies.py`，审查变更后提交这一份依赖文件。显式源码覆盖和父工程已提供的依赖目标继续优先。
+C++ 库可用 `-DARIA_DEP_JSON_VERSION=3.12.0`、`-DARIA_DEP_MIRA_VERSION=1.0.0`、`-DARIA_DEP_OPENSSL_VERSION=4.0.3` 等覆盖；CMake 将临时覆盖写入构建目录的解析缓存，不修改源码中的 `dependencies.json`。要更新并保存共享锁，运行 `python scripts/ci/update_dependencies.py`，审查变更后提交这一份依赖文件。显式源码覆盖和父工程已提供的依赖目标继续优先。
 
 Qt 使用已安装的 SDK，不自动下载安装。未指定版本时优先选择可发现的最新版本；`-DARIA_DEP_QT_VERSION=6.8.3` 要求精确版本，`Qt6_DIR` / `CMAKE_PREFIX_PATH` 可指定 SDK 所在位置。
 
-安装 SDK 方式不重新获取或重建 SDK 的第三方库。`tools/build.py --aria-prefix` 严格使用依赖锁中的版本；直接调用 CMake 且未固定版本时，才查找可发现的最新兼容 Aria 3.x SDK。可用 `-DARIA_DEP_ARIA_VERSION=3.1.1` 要求精确 SDK 版本，并用 `aria_DIR` / `CMAKE_PREFIX_PATH` 指定位置。源码方式优先于 SDK 查找。
+安装 SDK 方式不重新获取或重建 SDK 的第三方库。`scripts/build.py --aria-prefix` 严格使用依赖锁中的版本；直接调用 CMake 且未固定版本时，才查找可发现的最新兼容 Aria 3.x SDK。可用 `-DARIA_DEP_ARIA_VERSION=3.1.1` 要求精确 SDK 版本，并用 `aria_DIR` / `CMAKE_PREFIX_PATH` 指定位置。源码方式优先于 SDK 查找。
 
 也可以直接用一键脚本：
 
