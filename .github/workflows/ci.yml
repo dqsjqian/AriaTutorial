@@ -24,10 +24,10 @@ jobs:
             ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang-19' }}
 
       - name: Verify dependency selection and fetch safety
-        run: python3 -m unittest discover -s tools/ci -p 'test_*.py'
+        run: python3 -m unittest discover -s scripts/ci -p 'test_*.py'
 
       - name: Fetch locked Aria
-        run: python3 tools/ci/fetch_aria.py
+        run: python3 scripts/ci/fetch_aria.py
 
       - name: Configure
         env:
@@ -52,9 +52,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Verify dependency selection and fetch safety
-        run: python -m unittest discover -s tools/ci -p 'test_*.py'
+        run: python -m unittest discover -s scripts/ci -p 'test_*.py'
       - name: Fetch locked Aria
-        run: python tools/ci/fetch_aria.py
+        run: python scripts/ci/fetch_aria.py
       - name: Build and install shared SDK
         run: |
           cmake -S build/deps/aria -B build/sdk-build -DARIA_BUILD_TESTS=OFF -DARIA_BUILD_BENCHMARK=OFF -DARIA_BUILD_SHARED=ON "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/sdk"
