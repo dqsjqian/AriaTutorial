@@ -61,14 +61,16 @@ macOS 的 `--arch x86_64` / `--arch arm64` 选择实际目标架构；Visual Stu
 git clone https://github.com/dqsjqian/AriaTutorial.git
 cd AriaTutorial
 
-# 方式 A：指定 Aria 源码树
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT=../Aria
-cmake --build build -j
+# 方式 A：指定 Aria 源码树（默认 19 个示例）
+cmake -S . -B build/source -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT=../Aria
+cmake --build build/source -j
 
-# 方式 B：Aria 已安装，直接配置即可
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j
+# 方式 B：使用独立目录及已安装 SDK 的实际前缀（替换下方路径）
+cmake -S . -B build/sdk -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT= -DARIA_SDK_PREFIX=/path/to/aria-sdk
+cmake --build build/sdk -j
 ```
+
+两条路线使用不同构建目录；否则 CMake 缓存中的 `ARIA_ROOT` 会让后一次配置继续使用源码。原始 CMake 要启用全部 21 个示例，还需同时传入 `-DARIA_TUTORIAL_QT6=ON -DARIA_TUTORIAL_HTTP=ON` 并满足对应组件要求。
 
 源码方式也可先运行 `python tools/ci/fetch_aria.py`，再传入 `-DARIA_ROOT=build/deps/aria`。显式 `ARIA_ROOT` 直接使用所选源码树；嵌入 Aria 时共享本教程根目录的依赖请求与锁。
 
@@ -94,12 +96,12 @@ Qt 使用已安装的 SDK，不自动下载安装。未指定版本时优先选�
 
 ### 3. 运行
 
-所有可执行文件统一输出到 `build/bin/`。
+单配置生成器将可执行文件输出到所选构建目录的 `bin/`，Visual Studio 等多配置生成器还会增加 `Release/` 等配置子目录。下面对应上面的源码示例；SDK 路线使用 `build/sdk/bin/`，Python 入口使用它输出的构建目录。
 
 ```bash
-./build/bin/ch01_bill
-./build/bin/ch02_hello
-./build/bin/ch03_property
+./build/source/bin/ch01_bill
+./build/source/bin/ch02_hello
+./build/source/bin/ch03_property
 ```
 
 ## 章节目录

@@ -78,14 +78,20 @@ path cache conflicts are rejected before fetching; existing files are preserved.
 git clone https://github.com/dqsjqian/AriaTutorial.git
 cd AriaTutorial
 
-# Option A: point at a source tree
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT=../Aria
-cmake --build build -j
+# Option A: point at a source tree (19 demos by default)
+cmake -S . -B build/source -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT=../Aria
+cmake --build build/source -j
 
-# Option B: Aria already installed
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j
+# Option B: use a separate directory and the actual installed SDK prefix
+# Replace the example prefix below.
+cmake -S . -B build/sdk -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT= -DARIA_SDK_PREFIX=/path/to/aria-sdk
+cmake --build build/sdk -j
 ```
+
+Keep separate build directories: a cached `ARIA_ROOT` would otherwise keep the
+second configuration on the source route. To enable all 21 demos with direct
+CMake, also pass `-DARIA_TUTORIAL_QT6=ON -DARIA_TUTORIAL_HTTP=ON` and provide the
+corresponding components.
 
 For the source route, you can also run `python tools/ci/fetch_aria.py` and pass `-DARIA_ROOT=build/deps/aria`. Explicit `ARIA_ROOT` uses the selected source tree directly; embedded Aria shares this tutorial's root dependency requests and lock.
 
@@ -111,13 +117,16 @@ Or use the convenience script:
 
 ### 3. Run
 
-All executables land in `build/bin/`.
+Single-configuration generators place executables in the selected build directory's
+`bin/`; Visual Studio and other multi-configuration generators add a configuration
+subdirectory such as `Release/`. The commands below match the source example above.
+The SDK route uses `build/sdk/bin/`; the Python entry prints its selected build directory.
 
 ```bash
-./build/bin/ch01_bill
-./build/bin/ch02_hello
-./build/bin/ch03_property
-./build/bin/ch04_computed
+./build/source/bin/ch01_bill
+./build/source/bin/ch02_hello
+./build/source/bin/ch03_property
+./build/source/bin/ch04_computed
 ```
 
 ## Chapters

@@ -2,6 +2,7 @@
 
 ## 0.2.0
 
+- Select the published Aria 3.2.0 and Mira 1.1.1 dependencies.
 - Add `--all-demos` to build and test all 21 examples, including Qt6 and HTTP,
   through one entry point. Exercise both optional chapters in Linux CI.
 
