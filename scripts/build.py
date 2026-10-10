@@ -94,10 +94,13 @@ def extra_definitions(arguments, flags):
 
 
 def locked_aria_version(root):
-    # dependencies.py location varies by repo: scripts/ci/ (most) or scripts/ (Aria)
-    reader = root / "scripts/ci/dependencies.py"
-    if not reader.is_file():
-        reader = Path(__file__).resolve().with_name("dependencies.py")
+    # dependencies.py is in scripts/ci/ alongside build.py's repo
+    candidates = [
+        root / "scripts/ci/dependencies.py",
+        Path(__file__).resolve().parent / "ci/dependencies.py",
+        Path(__file__).resolve().with_name("dependencies.py"),
+    ]
+    reader = next((p for p in candidates if p.is_file()), candidates[-1])
     if not reader.is_file():
         reader = Path(__file__).resolve().parent / "dependencies.py"
     spec = importlib.util.spec_from_file_location("build_dependencies", reader)
