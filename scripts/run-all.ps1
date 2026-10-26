@@ -16,16 +16,7 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $build = Join-Path $root $BuildDir
 
-$cmakeArgs = @("-S", $root, "-B", $build, "-DCMAKE_BUILD_TYPE=Release", "-DBUILD_TESTING=ON")
-if ($AriaRoot -ne "") { $cmakeArgs += "-DARIA_ROOT=$AriaRoot" }
-
-Write-Host "== configure =="
-& cmake @cmakeArgs
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-Write-Host "== build =="
-& cmake --build $build --config Release --parallel
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-& ctest --test-dir $build -C Release --output-on-failure --no-tests=error --timeout 30
+$buildArgs = @("$root/scripts/build.py", "--build-dir", $build, "--test")
+if ($AriaRoot -ne "") { $buildArgs += @("--aria-root", $AriaRoot) }
+& python @buildArgs
 exit $LASTEXITCODE

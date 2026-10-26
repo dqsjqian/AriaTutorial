@@ -21,15 +21,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-cmake_args=(-S "$root" -B "$build" -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON)
-if [[ -n "$aria_root" ]]; then
-    cmake_args+=("-DARIA_ROOT=$aria_root")
-fi
-
-echo "== configure =="
-cmake "${cmake_args[@]}"
-
-echo "== build =="
-cmake --build "$build" --config Release --parallel
-
-ctest --test-dir "$build" -C Release --output-on-failure --no-tests=error --timeout 30
+args=(--build-dir "$build" --test)
+if [[ -n "$aria_root" ]]; then args+=(--aria-root "$aria_root"); fi
+exec "${PYTHON:-python3}" "$root/scripts/build.py" "${args[@]}"

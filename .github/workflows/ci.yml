@@ -2,65 +2,100 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, work/forgedeps-integration]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+env:
+  FORGEDEPS_HOME: ${{ github.workspace }}/.forgedeps
+  # Candidate source is explicit; published dependency locks remain unchanged.
+  ARIA_SDK_SOURCE: ${{ github.workspace }}/build/aria-candidate
 
 jobs:
   demos:
     name: Build & run all demos (${{ matrix.compiler }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
-        compiler: [gcc, clang]
+        include:
+          - { compiler: gcc, container: gcc:16 }
+          - { compiler: clang, llvm: "23" }
+    container:
+      image: ${{ matrix.container || '' }}
+    env:
+      GCC_VERSION: "16"
+      LLVM_VERSION: "23"
+      PYTHON_VERSION: "3.14"
     steps:
       - uses: actions/checkout@v7
+      - name: Set up GCC 16, Python and Qt6
+        if: matrix.container
+        run: .github/scripts/setup-gcc-container.sh qt6-base-dev
 
-      - name: Install toolchain
+      - uses: actions/setup-python@v7
+        # Container jobs bring their own interpreter.
+        if: env.VIRTUAL_ENV == ''
+        with:
+          python-version: '3.14'
+      - name: Checkout reviewed Aria SDK candidate
+        uses: actions/checkout@v7
+        with:
+          repository: dqsjqian/Aria
+          ref: v3.2.1
+          path: build/aria-candidate
+          persist-credentials: false
+
+      - name: Set up LLVM 23 and Qt6
+        if: matrix.llvm
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build qt6-base-dev \
-            ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang-19' }}
+          .github/scripts/install-llvm.sh runtime
+          sudo apt-get install -y qt6-base-dev
 
+      - name: Install shared dependency tooling
+        run: python3 -m pip install --break-system-packages -r requirements-build.txt
+      - name: Initialize shared dependency workspace
+        run: python -m forgedeps init .forgedeps
       - name: Verify dependency selection and fetch safety
         run: python3 -m unittest discover -s scripts/ci -p 'test_*.py'
 
-      - name: Fetch locked Aria
-        run: python3 scripts/ci/fetch_aria.py
 
       - name: Configure
-        env:
-          CC: ${{ matrix.compiler == 'gcc' && 'gcc-14' || 'clang-19' }}
-          CXX: ${{ matrix.compiler == 'gcc' && 'g++-14' || 'clang++-19' }}
         run: >
           python3 scripts/build.py --configure-only --build-dir build --generator Ninja --test --all-demos
-          --aria-root=${{ github.workspace }}/build/deps/aria
 
       - name: Build
-        run: cmake --build build -j
+        run: python -m forgedeps.build_kit.session --build-dir build -- cmake --build build -j
 
       - name: Run all demos
         run: |
-          ctest --test-dir build --show-only=json-v1 > build/demo-tests.json
+          python -m forgedeps.build_kit.session --build-dir build -- ctest --test-dir build --show-only=json-v1 > build/demo-tests.json
           python3 -c "import json; names = {t['name'] for t in json.load(open('build/demo-tests.json'))['tests']}; assert {'ch15_qt6', 'ch15_http'} <= names, names"
-          ctest --test-dir build --output-on-failure --no-tests=error --timeout 30
+          python -m forgedeps.build_kit.session --build-dir build -- ctest --test-dir build --output-on-failure --no-tests=error --timeout 30
 
   windows-sdk:
     name: Installed shared SDK (Windows)
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        # Container jobs bring their own interpreter.
+        if: env.VIRTUAL_ENV == ''
+        with:
+          python-version: '3.14'
+      - name: Checkout reviewed Aria SDK candidate
+        uses: actions/checkout@v7
+        with:
+          repository: dqsjqian/Aria
+          ref: v3.2.1
+          path: build/aria-candidate
+          persist-credentials: false
+      - name: Install shared dependency tooling
+        run: python -m pip install --break-system-packages -r requirements-build.txt
+      - name: Initialize shared dependency workspace
+        run: python -m forgedeps init .forgedeps
       - name: Verify dependency selection and fetch safety
         run: python -m unittest discover -s scripts/ci -p 'test_*.py'
-      - name: Fetch locked Aria
-        run: python scripts/ci/fetch_aria.py
-      - name: Build and install shared SDK
-        run: |
-          cmake -S build/deps/aria -B build/sdk-build -DARIA_BUILD_TESTS=OFF -DARIA_BUILD_BENCHMARK=OFF -DARIA_BUILD_SHARED=ON "-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/sdk"
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          cmake --build build/sdk-build --config Release --parallel 3
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          cmake --install build/sdk-build --config Release
-      - name: Build installed-SDK demos and run with deployed runtime DLLs
-        run: python scripts/build.py --aria-prefix "${{ github.workspace }}/build/sdk" --build-dir build/installed-sdk --test --jobs 3
+      - name: Build shared-store SDK, compile demos and test
+        run: python scripts/build.py --build-dir build/shared-sdk --test --jobs 3

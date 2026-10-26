@@ -31,103 +31,23 @@ This tutorial series runs through five stages — fundamentals, reactive core, c
 
 ## Quick start
 
-### 1. Get Aria
-
-Pick either route.
-
-**Option A — source tree** (no install needed)
+Install the build tools and register one workspace shared by your projects:
 
 ```bash
-git clone https://github.com/dqsjqian/Aria.git
+python -m pip install -r requirements-build.txt
+python -m forgedeps init /path/to/ForgeDepsWorkspace
+python scripts/build.py --test
 ```
 
-**Option B — install the SDK** (recommended for production)
+Builds use the recorded `dependencies.json` selection without selecting new releases. `FORGEDEPS_HOME` overrides the registered workspace. Sources live in `sources/`; Aria and third-party SDKs live in `build/<name>/<target>/`. Applications link those prefixes directly. Each target keeps one current artifact; changes to versions, compilers, ABI, source contents or recipes rebuild it transactionally and preserve the previous artifact on failure.
 
-```bash
-cmake -S Aria -B Aria/build/release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
-cmake --build Aria/build/release -j
-cmake --install Aria/build/release
-```
+`--aria-root /path/to/Aria` (CMake `ARIA_DIR`, or Tutorial `ARIA_ROOT`) selects editable sources which are still content-hashed and built into the shared SDK. Qt, NDK and Apple SDKs are installed separately; actual toolchain and Qt contents participate in artifact identity. Use `scripts/ci/update_dependencies.py` to change versions, then review and commit the lock.
 
-### 2. Build the demos
+The Python entry holds reader leases through configure, build, tests and deployment. For manual commands use `python -m forgedeps.build_kit.session --configure -- cmake -S ... -B ...`, then `python -m forgedeps.build_kit.session --build-dir <build> -- <command>`. Offline builds require prepared sources/downloads and the toolchain; incompatible or modified artifacts fail verification.
 
-Recommended: `python scripts/build.py --test` reuses the locked Aria source,
-configures, builds and runs CTest. Use `--aria-root` for a local source,
-`--offline` for cached dependencies and `--dry-run` to inspect the plan.
-`--platform qt|web` enables the corresponding adapter chapter. Direct CMake
-and installed-SDK workflows remain supported.
+`fetch_aria.py` is optional shared-source preparation. Local mirror development checkouts require `--source <repo> --destination <path>`. Application builds prepare their SDK automatically.
 
-Run `python scripts/build.py --all-demos --test` to build and test all 21 demos,
-including both Qt6 and HTTP; install Qt6 first. The default builds 19 non-UI
-demos. `--all-demos` uses a separate default build directory. With `--aria-prefix`,
-the selected SDK must provide both Qt6 and HTTP components; missing components fail explicitly.
-
-For an installed SDK, run `python scripts/build.py --aria-prefix /path/to/aria-sdk --test`.
-It requires the exact Aria version locked in `dependencies.json` within that
-prefix and does not fetch sources. A wrong version or prefix fails explicitly.
-`--aria-prefix` and `--aria-root` are mutually exclusive; SDK builds have a
-separate default directory. Add `--qt-prefix` to select Qt independently.
-
-On macOS, `--arch x86_64` / `--arch arm64` selects the actual target architecture.
-Visual Studio accepts `--generator-platform x64` (or `ARM64`). Extra definitions
-use `--cmake-arg=-DNAME[:TYPE]=VALUE` and cannot override the selected configuration,
-source or platform. Existing compiler, toolchain, architecture and source/SDK
-path cache conflicts are rejected before fetching; existing files are preserved.
-
-```bash
-git clone https://github.com/dqsjqian/AriaTutorial.git
-cd AriaTutorial
-
-# Option A: point at a source tree (19 demos by default)
-cmake -S . -B build/source -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT=../Aria
-cmake --build build/source -j
-
-# Option B: use a separate directory and the actual installed SDK prefix
-# Replace the example prefix below.
-cmake -S . -B build/sdk -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT= -DARIA_SDK_PREFIX=/path/to/aria-sdk
-cmake --build build/sdk -j
-```
-
-Keep separate build directories: a cached `ARIA_ROOT` would otherwise keep the
-second configuration on the source route. To enable all 21 demos with direct
-CMake, also pass `-DARIA_TUTORIAL_QT6=ON -DARIA_TUTORIAL_HTTP=ON` and provide the
-corresponding components.
-
-For the source route, you can also run `python scripts/ci/fetch_aria.py` and pass `-DARIA_ROOT=build/deps/aria`. Explicit `ARIA_ROOT` uses the selected source tree directly; embedded Aria shares this tutorial's root dependency requests and lock.
-
-The single root `dependencies.json` contains version requests and each dependency’s `resolved` result. Without an explicit version or a matching lock, the first resolution selects the latest stable release and records its version, commit, and SHA256. Existing locks are reused, so ordinary builds do not follow new releases. Explicit versions take priority: for example, `python scripts/ci/fetch_aria.py --version 3.1.1` overrides `ARIA_DEP_ARIA_VERSION`. Run `python scripts/ci/fetch_aria.py --update` to upgrade Aria deliberately.
-
-Override C++ libraries with options such as `-DARIA_DEP_JSON_VERSION=3.12.0`, `-DARIA_DEP_MIRA_VERSION=1.0.0`, and `-DARIA_DEP_OPENSSL_VERSION=4.0.3`. CMake records temporary overrides in a build-directory resolution cache without changing the source `dependencies.json`. To update the shared library lock, run `python scripts/ci/update_dependencies.py`, review the changes, and commit this dependency file. Explicit source overrides and dependency targets supplied by a parent project retain priority.
-
-Qt uses installed SDKs and never downloads or installs them automatically. The default prefers the latest discoverable version; `-DARIA_DEP_QT_VERSION=6.8.3` requires that exact version. Use `Qt6_DIR` / `CMAKE_PREFIX_PATH` to select an SDK location.
-
-The installed SDK route does not fetch or rebuild the SDK's third-party libraries. `scripts/build.py --aria-prefix` requires the locked version; direct CMake discovery without an explicit version selects the latest discoverable compatible Aria 3.x SDK. Use `-DARIA_DEP_ARIA_VERSION=3.1.1` for an exact SDK version, and `aria_DIR` / `CMAKE_PREFIX_PATH` for its location. Explicit source selection takes precedence over SDK discovery.
-
-Or use the convenience script:
-
-```powershell
-# Windows
-.\scripts\run-all.ps1 -AriaRoot ..\Aria
-```
-
-```bash
-# macOS / Linux
-./scripts/run-all.sh --aria-root ../Aria
-```
-
-### 3. Run
-
-Single-configuration generators place executables in the selected build directory's
-`bin/`; Visual Studio and other multi-configuration generators add a configuration
-subdirectory such as `Release/`. The commands below match the source example above.
-The SDK route uses `build/sdk/bin/`; the Python entry prints its selected build directory.
-
-```bash
-./build/source/bin/ch01_bill
-./build/source/bin/ch02_hello
-./build/source/bin/ch03_property
-./build/source/bin/ch04_computed
-```
+The default builds 19 demos. `--all-demos --test` includes the Qt6 and HTTP demos (21 total). `--aria-prefix <prefix>` consumes an existing SDK at the exact locked version and is mutually exclusive with `--aria-root`.
 
 ## Chapters
 

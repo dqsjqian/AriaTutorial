@@ -29,80 +29,23 @@
 
 ## 快速开始
 
-### 1. 准备 Aria
-
-两种方式任选其一。
-
-**方式 A：用源码树**（无需提前安装）
+安装构建工具后，注册一个可供所有项目共享的工作区：
 
 ```bash
-git clone https://github.com/dqsjqian/Aria.git
+python -m pip install -r requirements-build.txt
+python -m forgedeps init /path/to/ForgeDepsWorkspace
+python scripts/build.py --test
 ```
 
-**方式 B：安装 SDK**（生产环境推荐）
+默认从 `dependencies.json` 的已解析锁准备源码和 SDK；构建不自动选择新版本。`FORGEDEPS_HOME` 可覆盖已注册工作区。源码位于工作区 `sources/`，Aria 和第三方产物位于 `build/<name>/<target>/`；应用直接链接此处，每个目标只保留当前产物。版本、编译器、ABI、源码或配方变化会触发显式构建替换，失败保留旧产物。
 
-```bash
-cmake -S Aria -B Aria/build/release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
-cmake --build Aria/build/release -j
-cmake --install Aria/build/release
-```
+`--aria-root /path/to/Aria`（CMake 的 `ARIA_DIR`，Tutorial 为 `ARIA_ROOT`）提供可编辑源码；其内容仍被哈希并编译进共享 SDK，不再嵌入应用子目录。Qt、NDK 和 Apple SDK 由用户安装，实际工具链与 Qt 内容进入产物身份。更新版本使用 `scripts/ci/update_dependencies.py`，审查并提交锁文件。
 
-### 2. 构建全部 demo
+Python 入口持有配置、编译、测试和部署所需的消费锁。手工命令使用 `python -m forgedeps.build_kit.session --configure -- cmake -S ... -B ...`，后续构建/测试使用 `python -m forgedeps.build_kit.session --build-dir <build> -- <command>`。离线构建要求已准备对应源码、归档和工具链；不兼容或被改动的产物会失败。
 
-推荐入口：`python scripts/build.py --test`，自动复用锁定 Aria 源码、配置、编译并执行 CTest。`--aria-root` 指定本地源码，`--offline` 使用缓存，`--dry-run` 只看计划；可选 `--platform qt|web` 启用对应适配器章节。原始 CMake 和已安装 SDK 用法仍然有效。
+`fetch_aria.py` 只用于单独准备共享源码；本地镜像开发 checkout 使用 `--source <repo> --destination <path>`。默认应用构建不需要先运行此命令。
 
-要同时构建并测试全部 21 个示例（包括 Qt6 和 HTTP），运行 `python scripts/build.py --all-demos --test`；需先安装 Qt6。默认仅构建 19 个无 UI 示例。`--all-demos` 使用独立默认构建目录；与 `--aria-prefix` 同用时，所选 SDK 必须包含 Qt6 和 HTTP 模块，缺失会明确失败。
-
-已安装 SDK 可直接使用 `python scripts/build.py --aria-prefix /path/to/aria-sdk --test`：只在所选前缀中寻找 `dependencies.json` 锁定的精确 Aria 版本，不拉取源码；版本或前缀不匹配会明确失败。`--aria-prefix` 与 `--aria-root` 互斥，SDK 构建有独立默认目录，可同时用 `--qt-prefix` 指定 Qt。
-
-macOS 的 `--arch x86_64` / `--arch arm64` 选择实际目标架构；Visual Studio 使用 `--generator-platform x64`（或 `ARM64`）。`--cmake-arg=-DNAME[:TYPE]=VALUE` 只补充定义，不允许覆盖已选配置、源码或平台。入口会在下载前检查已有缓存的编译器、工具链、架构和源码/SDK 路径，冲突时保留原文件并要求另选构建目录。
-
-```bash
-git clone https://github.com/dqsjqian/AriaTutorial.git
-cd AriaTutorial
-
-# 方式 A：指定 Aria 源码树（默认 19 个示例）
-cmake -S . -B build/source -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT=../Aria
-cmake --build build/source -j
-
-# 方式 B：使用独立目录及已安装 SDK 的实际前缀（替换下方路径）
-cmake -S . -B build/sdk -DCMAKE_BUILD_TYPE=Release -DARIA_ROOT= -DARIA_SDK_PREFIX=/path/to/aria-sdk
-cmake --build build/sdk -j
-```
-
-两条路线使用不同构建目录；否则 CMake 缓存中的 `ARIA_ROOT` 会让后一次配置继续使用源码。原始 CMake 要启用全部 21 个示例，还需同时传入 `-DARIA_TUTORIAL_QT6=ON -DARIA_TUTORIAL_HTTP=ON` 并满足对应组件要求。
-
-源码方式也可先运行 `python scripts/ci/fetch_aria.py`，再传入 `-DARIA_ROOT=build/deps/aria`。显式 `ARIA_ROOT` 直接使用所选源码树；嵌入 Aria 时共享本教程根目录的依赖请求与锁。
-
-根目录唯一的 `dependencies.json` 同时保存版本请求与每项的 `resolved` 结果。没有显式版本、也没有匹配锁时，首次解析最新稳定版并记录版本、提交和 SHA256；已有锁会直接复用，普通构建不会追随新发布。显式版本优先，例如 `python scripts/ci/fetch_aria.py --version 3.1.1`（优先于 `ARIA_DEP_ARIA_VERSION`）；主动升级 Aria 使用 `python scripts/ci/fetch_aria.py --update`。
-
-C++ 库可用 `-DARIA_DEP_JSON_VERSION=3.12.0`、`-DARIA_DEP_MIRA_VERSION=1.0.0`、`-DARIA_DEP_OPENSSL_VERSION=4.0.3` 等覆盖；CMake 将临时覆盖写入构建目录的解析缓存，不修改源码中的 `dependencies.json`。要更新并保存共享锁，运行 `python scripts/ci/update_dependencies.py`，审查变更后提交这一份依赖文件。显式源码覆盖和父工程已提供的依赖目标继续优先。
-
-Qt 使用已安装的 SDK，不自动下载安装。未指定版本时优先选择可发现的最新版本；`-DARIA_DEP_QT_VERSION=6.8.3` 要求精确版本，`Qt6_DIR` / `CMAKE_PREFIX_PATH` 可指定 SDK 所在位置。
-
-安装 SDK 方式不重新获取或重建 SDK 的第三方库。`scripts/build.py --aria-prefix` 严格使用依赖锁中的版本；直接调用 CMake 且未固定版本时，才查找可发现的最新兼容 Aria 3.x SDK。可用 `-DARIA_DEP_ARIA_VERSION=3.1.1` 要求精确 SDK 版本，并用 `aria_DIR` / `CMAKE_PREFIX_PATH` 指定位置。源码方式优先于 SDK 查找。
-
-也可以直接用一键脚本：
-
-```powershell
-# Windows
-.\scripts\run-all.ps1 -AriaRoot ..\Aria
-```
-
-```bash
-# macOS / Linux
-./scripts/run-all.sh --aria-root ../Aria
-```
-
-### 3. 运行
-
-单配置生成器将可执行文件输出到所选构建目录的 `bin/`，Visual Studio 等多配置生成器还会增加 `Release/` 等配置子目录。下面对应上面的源码示例；SDK 路线使用 `build/sdk/bin/`，Python 入口使用它输出的构建目录。
-
-```bash
-./build/source/bin/ch01_bill
-./build/source/bin/ch02_hello
-./build/source/bin/ch03_property
-```
+默认构建 19 个示例；`--all-demos --test` 构建 Qt6 与 HTTP 在内的 21 个示例。`--aria-prefix <prefix>` 可消费锁定精确版本的既有 SDK，与 `--aria-root` 互斥。
 
 ## 章节目录
 

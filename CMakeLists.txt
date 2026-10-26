@@ -23,51 +23,19 @@ endif()
 # ---------------------------------------------------------------------------
 option(ARIA_TUTORIAL_QT6  "构建第 15 章：Qt6 适配器示例（需 Qt6）"       OFF)
 option(ARIA_TUTORIAL_HTTP "构建第 15 章：HTTP 适配器示例（需 HTTP 模块）" OFF)
-
-# ---------------------------------------------------------------------------
-# 定位 Aria：显式 ARIA_ROOT 优先，否则使用已安装的 3.x SDK
-# ---------------------------------------------------------------------------
-set(ARIA_ROOT "" CACHE PATH "Aria 3.x 源码树路径（优先于已安装 SDK）")
-if(ARIA_ROOT)
-  if(NOT EXISTS "${ARIA_ROOT}/CMakeLists.txt")
-    message(FATAL_ERROR "ARIA_ROOT 不是 Aria 源码树：${ARIA_ROOT}")
-  endif()
-  message(STATUS "Aria: 使用源码树 ${ARIA_ROOT}")
-
-  set(ARIA_BUILD_TESTS     OFF CACHE BOOL "" FORCE)
-  set(ARIA_BUILD_BENCHMARK OFF CACHE BOOL "" FORCE)
-  set(ARIA_BUILD_DOCS      OFF CACHE BOOL "" FORCE)
-  set(ARIA_BUILD_QT6  ${ARIA_TUTORIAL_QT6}  CACHE BOOL "" FORCE)
-  set(ARIA_BUILD_HTTP ${ARIA_TUTORIAL_HTTP} CACHE BOOL "" FORCE)
-
-  add_subdirectory("${ARIA_ROOT}" "${CMAKE_BINARY_DIR}/_aria" EXCLUDE_FROM_ALL)
-else()
-  set(_aria_components core async runtime binding)
-  if(ARIA_TUTORIAL_QT6)
-    list(APPEND _aria_components qt6)
-  endif()
-  if(ARIA_TUTORIAL_HTTP)
-    list(APPEND _aria_components http)
-  endif()
-  # Respect an explicit SDK prefix/version. Otherwise choose the newest
-  # compatible SDK in the configured package search paths.
-  set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
-  set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
-  set(_aria_sdk_search)
-  if(ARIA_SDK_PREFIX)
-    # A prior aria_DIR or system SDK must not defeat an explicit SDK selection.
-    unset(aria_DIR CACHE)
-    unset(aria_DIR)
-    list(APPEND _aria_sdk_search PATHS "${ARIA_SDK_PREFIX}" NO_DEFAULT_PATH)
-  endif()
-  if(ARIA_DEP_ARIA_VERSION)
-    string(REGEX REPLACE "^v" "" _aria_sdk_version "${ARIA_DEP_ARIA_VERSION}")
-    find_package(aria ${_aria_sdk_version} EXACT REQUIRED CONFIG COMPONENTS ${_aria_components} ${_aria_sdk_search})
-  else()
-    find_package(aria 3.0 REQUIRED CONFIG COMPONENTS ${_aria_components} ${_aria_sdk_search})
-  endif()
-  message(STATUS "Aria: 使用已安装的 3.x SDK")
+option(ARIA_TUTORIAL_HTTP_TLS "Enable TLS in the selected HTTP SDK" OFF)
+if(ARIA_TUTORIAL_HTTP_TLS AND NOT ARIA_TUTORIAL_HTTP)
+    message(FATAL_ERROR "ARIA_TUTORIAL_HTTP_TLS requires ARIA_TUTORIAL_HTTP")
 endif()
+
+# Default and editable-source SDKs both live in the shared ForgeDeps store.
+set(ARIA_ROOT "" CACHE PATH "Optional editable Aria source for the shared SDK recipe")
+set(ARIA_SDK_SOURCE "${ARIA_ROOT}")
+set(ARIA_SDK_QT ${ARIA_TUTORIAL_QT6})
+set(ARIA_SDK_HTTP ${ARIA_TUTORIAL_HTTP})
+set(ARIA_SDK_TLS ${ARIA_TUTORIAL_HTTP_TLS})
+set(ARIA_SDK_SHARED OFF)
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/SharedAria.cmake")
 
 include(CTest)
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/TutorialRuntime.cmake")
