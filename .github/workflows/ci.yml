@@ -8,6 +8,10 @@ on:
   workflow_dispatch:
 
 env:
+  # The CI scripts print UTF-8 diagnostics; a Windows console defaults
+  # to cp1252 and raises UnicodeEncodeError on them.
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: utf-8
   # Candidate source is explicit; published dependency locks remain unchanged.
   ARIA_SDK_SOURCE: ${{ github.workspace }}/build/aria-candidate
 
