@@ -30,12 +30,10 @@ if(NOT ARIA_SDK_PREFIX)
         QT "${ARIA_SDK_QT}" HTTP "${ARIA_SDK_HTTP}" TLS "${ARIA_SDK_TLS}"
         JNI "${ARIA_SDK_JNI}" APPKIT "${ARIA_SDK_APPKIT}" UIKIT "${ARIA_SDK_UIKIT}"
         SHARED "${ARIA_SDK_SHARED}" PREFIXES ARIA_SDK_PREFIXES)
-    foreach(_prefix IN LISTS ARIA_SDK_PREFIXES)
-        if(EXISTS "${_prefix}/lib/cmake/aria/ariaConfig.cmake")
-            set(ARIA_SDK_PREFIX "${_prefix}")
-            break()
-        endif()
-    endforeach()
+    # The recipe package layout is owned by the recipe layer, not duplicated here.
+    # The helper also sets the aria_DIR cache entry for the lookup below.
+    forgerecipes_locate_package(PREFIXES ${ARIA_SDK_PREFIXES} PACKAGE aria
+        OUT _aria_config_dir PREFIX_OUT ARIA_SDK_PREFIX)
     if(NOT ARIA_SDK_PREFIX)
         message(FATAL_ERROR "The shared environment did not install an Aria SDK")
     endif()
@@ -50,7 +48,5 @@ foreach(_feature QT HTTP JNI APPKIT UIKIT)
         list(APPEND _aria_components "${_component}")
     endif()
 endforeach()
-unset(aria_DIR CACHE)
-unset(aria_DIR)
 find_package(aria ${ARIA_DEP_ARIA_VERSION} EXACT CONFIG REQUIRED COMPONENTS ${_aria_components}
     PATHS "${ARIA_SDK_PREFIX}" NO_DEFAULT_PATH)
